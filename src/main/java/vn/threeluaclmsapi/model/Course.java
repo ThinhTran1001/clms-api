@@ -30,6 +30,13 @@ public class Course extends AbstractEntity {
     private List<CourseInstructor> courseInstructors;
 
     @OneToMany(mappedBy = "course")
-    private List<Enrollment> CourseEnrollments;
+    private List<Enrollment> courseEnrollments;
+
+    @ManyToOne
+    @JoinColumn(name = "classroom_id")
+    private Classroom classroom;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Lesson> lessons;
 
 }

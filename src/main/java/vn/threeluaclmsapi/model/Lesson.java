@@ -24,6 +24,10 @@ public class Lesson extends AbstractEntity {
     @Column(name = "lesson_description")
     private String lessonDescription;
 
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
     @OneToMany(mappedBy = "lesson")
     private List<ClassroomSchedule> lessonClassroomSchedules;
 
