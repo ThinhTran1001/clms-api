@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 @Table(name = "tbl_student")
 @Entity
-public class Student extends AbstractEntity{
+public class Student extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

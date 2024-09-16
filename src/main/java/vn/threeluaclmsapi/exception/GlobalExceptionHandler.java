@@ -1,4 +1,4 @@
 package vn.threeluaclmsapi.exception;
 
-public class GlobalHandleException {
+public class GlobalExceptionHandler {
 }
