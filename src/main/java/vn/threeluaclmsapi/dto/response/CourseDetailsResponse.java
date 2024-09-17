@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CourseDetailsResponse {
+    private String courseId;
     private String courseTitle;
     private String subject;
     private String semester;

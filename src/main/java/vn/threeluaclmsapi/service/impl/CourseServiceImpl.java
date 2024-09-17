@@ -39,20 +39,11 @@ public class CourseServiceImpl implements CourseService {
                 List<Course> courses = courseRepository.findAll();
 
                 return courses.stream().map(course -> {
-                        List<Lesson> lessons = lessonRepository.findByCourseId(course.getId());
-
                         CourseDetailsResponse courseResponse = new CourseDetailsResponse();
+                        courseResponse.setCourseId(course.getId());
                         courseResponse.setCourseTitle(course.getSubject().getSubjectName());
                         courseResponse.setSubject(course.getSubject().getSubjectName());
                         courseResponse.setSemester(course.getSemester().getSemesterName());
-
-                        List<LessonDetailsResponse> lessonDetails = lessons.stream()
-                                        .map(lesson -> new LessonDetailsResponse(lesson.getLessonTitle(),
-                                                        lesson.getLessonDescription()))
-                                        .collect(Collectors.toList());
-
-                        courseResponse.setLessons(lessonDetails);
-
                         return courseResponse;
                 }).collect(Collectors.toList());
         }
@@ -79,12 +70,13 @@ public class CourseServiceImpl implements CourseService {
 
         @Override
         public CourseDetailsResponse viewCourse(UUID courseId) {
-                Course course = courseRepository.findById(courseId)
+                Course course = courseRepository.findById(courseId.toString())
                                 .orElseThrow(() -> new RuntimeException("Course not found"));
 
                 List<Lesson> lessons = lessonRepository.findByCourseId(courseId.toString());
 
                 CourseDetailsResponse response = new CourseDetailsResponse();
+                response.setCourseId(course.getId());
                 response.setCourseTitle(course.getSubject().getSubjectName());
                 response.setSubject(course.getSubject().getSubjectName());
                 response.setSemester(course.getSemester().getSemesterName());
@@ -101,7 +93,7 @@ public class CourseServiceImpl implements CourseService {
 
         @Override
         public void updateCourse(UUID courseId, UpdateCourseRequest request) {
-                Course course = courseRepository.findById(courseId)
+                Course course = courseRepository.findById(courseId.toString())
                                 .orElseThrow(() -> new RuntimeException("Course not found"));
 
                 Subject subject = subjectRepository.findById(request.getSubject())
@@ -118,7 +110,7 @@ public class CourseServiceImpl implements CourseService {
 
         @Override
         public void deleteCourse(UUID courseId) {
-                courseRepository.deleteById(courseId);
+                courseRepository.deleteById(courseId.toString());
         }
 
 }

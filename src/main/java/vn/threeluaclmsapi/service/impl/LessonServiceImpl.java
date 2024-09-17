@@ -28,7 +28,7 @@ public class LessonServiceImpl implements LessonService {
             throw new IllegalArgumentException("Course ID cannot be null or empty");
         }
 
-        Course course = courseRepository.findById(UUID.fromString(request.getCourseId()))
+        Course course = courseRepository.findById(request.getCourseId())
                 .orElseThrow(() -> new RuntimeException("Course not found"));
 
         Lesson lesson = Lesson.builder()
