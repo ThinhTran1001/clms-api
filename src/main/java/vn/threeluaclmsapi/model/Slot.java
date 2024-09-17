@@ -27,5 +27,4 @@ public class Slot extends AbstractEntity {
 
     @OneToMany(mappedBy = "slot")
     private List<ClassroomSchedule> slotSchedules;
-
 }
