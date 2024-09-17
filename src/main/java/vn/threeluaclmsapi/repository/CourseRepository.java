@@ -2,8 +2,8 @@ package vn.threeluaclmsapi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import vn.threeluaclmsapi.model.Subject;
+import vn.threeluaclmsapi.model.Course;
 
 @Repository
-public interface SubjectRepository extends JpaRepository<Subject, String> {
+public interface CourseRepository extends JpaRepository<Course, String> {
 }

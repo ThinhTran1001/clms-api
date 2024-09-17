@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -32,5 +33,4 @@ public class Subject extends AbstractEntity {
 
     @OneToMany(mappedBy = "subject")
     private List<Course> subjectCourses;
-
 }
