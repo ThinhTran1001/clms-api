@@ -7,5 +7,5 @@ import vn.threeluaclmsapi.model.Classroom;
 import java.util.UUID;
 
 @Repository
-public interface ClassroomRepository extends JpaRepository<Classroom, UUID> {
+public interface ClassroomRepository extends JpaRepository<Classroom, String> {
 }
