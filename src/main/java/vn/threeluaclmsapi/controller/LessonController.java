@@ -1,5 +1,7 @@
 package vn.threeluaclmsapi.controller;
 
+import java.io.IOException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +22,7 @@ public class LessonController {
     private final LessonService lessonService;
 
     @PostMapping()
-    public ResponseData<?> createLesson(@RequestBody CreateLessonRequest request) {
+    public ResponseData<?> createLesson(@RequestBody CreateLessonRequest request) throws IOException {
         lessonService.createLesson(request);
         return new ResponseData<>(HttpStatus.CREATED.toString(), "Created lesson successfully!");
     }
