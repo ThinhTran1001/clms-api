@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @Table(name = "tbl_student_classroom")
 @Entity
-public class StudentClassroom {
+public class StudentClassroom extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -33,4 +33,8 @@ public class Subject extends AbstractEntity {
 
     @OneToMany(mappedBy = "subject")
     private List<Course> subjectCourses;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
