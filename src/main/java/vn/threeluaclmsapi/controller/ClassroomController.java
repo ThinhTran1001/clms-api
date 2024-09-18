@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.threeluaclmsapi.dto.request.CreateClassroomRequest;
+import vn.threeluaclmsapi.dto.response.ClassroomDetailResponse;
 import vn.threeluaclmsapi.dto.response.ClassroomResponse;
 import vn.threeluaclmsapi.dto.response.ResponseData;
 import vn.threeluaclmsapi.service.ClassroomService;
@@ -32,5 +33,11 @@ public class ClassroomController {
         List<ClassroomResponse> classroomResponseList = classroomService.getAllClassroom();
         log.info("Classroom classroomResponseList");
         return new ResponseData<>(HttpStatus.OK.toString(), "Classroom list", classroomResponseList);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseData<ClassroomDetailResponse> getClassroomById(@PathVariable String id){
+        ClassroomDetailResponse classroomDetailResponse = classroomService.getClassroomDetailById(id);
+        return new ResponseData<>(HttpStatus.OK.toString(), "Classroom detail with id: " + id, classroomDetailResponse);
     }
 }

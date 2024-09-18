@@ -6,8 +6,10 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import vn.threeluaclmsapi.util.constant.ValidationConstant;
 
+import java.io.Serializable;
+
 @Getter
-public class CreateClassroomRequest {
+public class CreateClassroomRequest implements Serializable {
 
     @NotBlank(message = "Tên lớp không được để trống!")
     @Pattern(regexp = "^[A-Z]{2}\\d{4}$", message = "Tên lớp không hợp lệ, phải có 2 chữ cái viết hoa và 4 số")
