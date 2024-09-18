@@ -2,13 +2,14 @@ package vn.threeluaclmsapi.service;
 
 import java.util.List;
 import java.util.UUID;
+import java.io.IOException;
 
 import vn.threeluaclmsapi.dto.request.CreateCourseRequest;
 import vn.threeluaclmsapi.dto.request.UpdateCourseRequest;
 import vn.threeluaclmsapi.dto.response.CourseDetailsResponse;
 
 public interface CourseService {
-    void createCourse(CreateCourseRequest request);
+    void createCourse(CreateCourseRequest request) throws IOException;
 
     CourseDetailsResponse viewCourse(UUID courseId);
 

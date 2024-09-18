@@ -39,4 +39,8 @@ public class Course extends AbstractEntity {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Lesson> lessons;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Attachment> attachments;
+
 }

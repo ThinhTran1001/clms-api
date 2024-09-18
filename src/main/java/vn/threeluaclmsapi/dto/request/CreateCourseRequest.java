@@ -3,6 +3,9 @@ package vn.threeluaclmsapi.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -19,4 +22,6 @@ public class CreateCourseRequest {
     private String[] courseInstructorIds;
     private String[] enrollmentIds;
     private String[] lessonIds;
+
+    private List<MultipartFile> attachments;
 }
