@@ -2,6 +2,8 @@ package vn.threeluaclmsapi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import vn.threeluaclmsapi.util.enums.Gender;
 
 import java.util.Date;
@@ -33,6 +35,8 @@ public class User extends AbstractEntity {
     private Date dob;
 
     @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private Gender gender;
 
     @Column(name = "full_name")

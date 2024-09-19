@@ -1,5 +1,6 @@
 package vn.threeluaclmsapi.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import vn.threeluaclmsapi.dto.request.CreateClassroomRequest;
 import vn.threeluaclmsapi.dto.response.ClassroomDetailResponse;
 import vn.threeluaclmsapi.dto.response.ClassroomResponse;
@@ -14,4 +15,6 @@ public interface ClassroomService {
     List<ClassroomResponse> getAllClassroom();
 
     ClassroomDetailResponse getClassroomDetailById(String id);
+
+    void importStudentListToClassroom(String classroomId, MultipartFile file);
 }

@@ -14,7 +14,7 @@ public class Student extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    private String id;
 
     @Column(name = "student_code")
     private String studentCode;
