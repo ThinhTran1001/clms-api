@@ -20,4 +20,6 @@ public interface ClassroomRepository extends JpaRepository<Classroom, String> {
             "JOIN tbl_classroom c ON c.id = sc.classroom_id " +
             "WHERE c.id LIKE %:classroomId%", nativeQuery = true)
     List<Object[]> findStudentsByClassroomId(String classroomId);
+
+
 }
