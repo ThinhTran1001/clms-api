@@ -1,7 +1,7 @@
 package vn.threeluaclmsapi.service;
 
-import vn.threeluaclmsapi.dto.request.CreateSemesterRequest;
-import vn.threeluaclmsapi.dto.response.SemesterResponse;
+import vn.threeluaclmsapi.dto.request.semester.CreateSemesterRequest;
+import vn.threeluaclmsapi.dto.response.semester.SemesterResponse;
 
 import java.util.List;
 

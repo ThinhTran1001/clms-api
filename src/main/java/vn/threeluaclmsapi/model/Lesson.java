@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -30,7 +29,7 @@ public class Lesson extends AbstractEntity {
     private Course course;
 
     @OneToMany(mappedBy = "lesson")
-    private List<ClassroomSchedule> lessonClassroomSchedules;
+    private List<Schedule> lessonSchedules;
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Attachment> attachments;

@@ -26,5 +26,5 @@ public class Slot extends AbstractEntity {
     private Date endDate;
 
     @OneToMany(mappedBy = "slot")
-    private List<ClassroomSchedule> slotSchedules;
+    private List<Schedule> slotSchedules;
 }

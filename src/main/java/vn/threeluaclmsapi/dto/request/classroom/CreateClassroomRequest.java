@@ -1,4 +1,4 @@
-package vn.threeluaclmsapi.dto.request;
+package vn.threeluaclmsapi.dto.request.classroom;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
