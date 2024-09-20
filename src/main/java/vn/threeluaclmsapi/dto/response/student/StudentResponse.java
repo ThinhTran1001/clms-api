@@ -1,4 +1,4 @@
-package vn.threeluaclmsapi.dto.response;
+package vn.threeluaclmsapi.dto.response.student;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

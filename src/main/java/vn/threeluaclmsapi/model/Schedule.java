@@ -8,9 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "tbl_classroom_schedule")
+@Table(name = "tbl_schedule")
 @Entity
-public class ClassroomSchedule extends AbstractEntity {
+public class Schedule extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
