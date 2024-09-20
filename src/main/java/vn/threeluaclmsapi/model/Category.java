@@ -2,8 +2,13 @@ package vn.threeluaclmsapi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Builder.Default;
 
-import java.util.Set;
+import java.util.List;
+
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Getter
 @Setter
@@ -15,13 +20,17 @@ import java.util.Set;
 public class Category extends AbstractEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(name = "category_name")
     private String categoryName;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Subject> subjects;
+    @Column(name = "category_status")
+    private Boolean categoryStatus = true;
+
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    private List<Subject> subjects;
 
 }
