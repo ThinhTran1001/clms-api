@@ -56,6 +56,7 @@ public class ClassroomServiceImpl implements ClassroomService {
         Classroom classroom = new Classroom();
         classroom.setClassroomName(request.getClassroomName());
         classroom.setCapacity(request.getCapacity());
+        classroom.setStatus(true);
 
         classroomRepository.save(classroom);
     }

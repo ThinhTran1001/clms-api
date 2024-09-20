@@ -26,6 +26,9 @@ public class Classroom extends AbstractEntity {
     @Column(name = "capacity")
     private int capacity;
 
+    @Column(name = "status")
+    private boolean status;
+
     @OneToMany(mappedBy = "classroom")
     private List<StudentClassroom> classroomStudents;
 
