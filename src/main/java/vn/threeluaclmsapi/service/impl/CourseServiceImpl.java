@@ -129,7 +129,6 @@ public class CourseServiceImpl implements CourseService {
         public void updateCourse(UUID courseId, UpdateCourseRequest request) {
                 Course course = courseRepository.findById(courseId.toString())
                                 .orElseThrow(() -> new RuntimeException("Course not found"));
-
                 Subject subject = subjectRepository.findById(request.getSubject())
                                 .orElseThrow(() -> new RuntimeException("Subject not found"));
                 UUID semesterId = UUID.fromString(request.getSemester());

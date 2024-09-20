@@ -3,9 +3,6 @@ package vn.threeluaclmsapi.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-import java.util.UUID;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,10 +28,8 @@ public class Subject extends AbstractEntity {
     @Column(name = "credit")
     private int credit;
 
-    @OneToMany(mappedBy = "subject")
-    private List<Course> subjectCourses;
-
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
 }
