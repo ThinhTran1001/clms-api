@@ -1,4 +1,4 @@
-package vn.threeluaclmsapi.dto.response;
+package vn.threeluaclmsapi.dto.response.semester;
 
 import lombok.Getter;
 import lombok.Setter;

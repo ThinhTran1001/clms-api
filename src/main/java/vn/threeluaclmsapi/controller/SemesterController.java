@@ -4,9 +4,9 @@ package vn.threeluaclmsapi.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import vn.threeluaclmsapi.dto.request.CreateSemesterRequest;
+import vn.threeluaclmsapi.dto.request.semester.CreateSemesterRequest;
 import vn.threeluaclmsapi.dto.response.ResponseData;
-import vn.threeluaclmsapi.dto.response.SemesterResponse;
+import vn.threeluaclmsapi.dto.response.semester.SemesterResponse;
 import vn.threeluaclmsapi.service.SemesterService;
 
 import java.util.List;

@@ -14,7 +14,7 @@ import java.util.Date;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({ MethodArgumentNotValidException.class, CommonException.class })
+    @ExceptionHandler({ MethodArgumentNotValidException.class, RuntimeException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseError handleValidationException(Exception ex, WebRequest request) {
         ResponseError error = new ResponseError();
@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
             int end = ex.getMessage().lastIndexOf("]");
             message = message.substring(start + 1, end - 1);
             error.setMessage(message);
-        } else if (ex instanceof CommonException) {
+        } else if (ex instanceof RuntimeException) {
             error.setMessage(message);
         }
 

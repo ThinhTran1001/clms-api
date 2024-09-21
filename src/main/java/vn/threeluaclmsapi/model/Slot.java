@@ -3,6 +3,7 @@ package vn.threeluaclmsapi.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -20,11 +21,11 @@ public class Slot extends AbstractEntity {
     private int id;
 
     @Column(name = "slot_start_time")
-    private Date startDate;
+    private LocalTime startTime;
 
     @Column(name = "slot_end_time")
-    private Date endDate;
+    private LocalTime endTIme;
 
     @OneToMany(mappedBy = "slot")
-    private List<ClassroomSchedule> slotSchedules;
+    private List<Schedule> slotSchedules;
 }

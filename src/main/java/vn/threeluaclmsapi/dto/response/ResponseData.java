@@ -17,14 +17,14 @@ public class ResponseData<T> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
-    // GET
+    // GET, POST
     public ResponseData(String statusCode, String message, T data) {
         this.statusCode = statusCode;
         this.message = message;
         this.data = data;
     }
 
-    // POST, PUT, DELETE
+    // PUT, DELETE
     public ResponseData(String statusCode, String message) {
         this.statusCode = statusCode;
         this.message = message;
