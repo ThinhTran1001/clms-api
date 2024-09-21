@@ -25,7 +25,7 @@ public class LessonController {
     private final LessonService lessonService;
 
     @PostMapping
-    public ResponseData<String> createCourse(@ModelAttribute @Valid CreateLessonRequest request) throws IOException {
+    public ResponseData<String> createLesson(@ModelAttribute @Valid CreateLessonRequest request) throws IOException {
         lessonService.createLesson(request);
         return new ResponseData<>("201", "Lesson created successfully");
     }
