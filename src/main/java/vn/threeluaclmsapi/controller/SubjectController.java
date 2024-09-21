@@ -1,11 +1,12 @@
 package vn.threeluaclmsapi.controller;
 
-import org.hibernate.validator.constraints.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import vn.threeluaclmsapi.dto.request.subject.CreateSubjectRequest;
+import vn.threeluaclmsapi.dto.request.subject.UpdateSubjectRequest;
 import vn.threeluaclmsapi.dto.response.ResponseData;
 import vn.threeluaclmsapi.model.Subject;
 import vn.threeluaclmsapi.service.SubjectService;
@@ -14,58 +15,52 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/subjects")
+@RequiredArgsConstructor
 public class SubjectController {
 
-    @Autowired
-    private SubjectService subjectService;
+    private final SubjectService subjectService;
 
     @GetMapping
-    public ResponseEntity<ResponseData<List<Subject>>> getAllSubjects() {
+    public ResponseData<List<Subject>> getAllSubjects() {
         List<Subject> subjects = subjectService.getAllSubjects();
-        ResponseData<List<Subject>> responseData;
-
         if (subjects.isEmpty()) {
-            responseData = new ResponseData<>("404", "No subjects found");
-            return new ResponseEntity<>(responseData, HttpStatus.NOT_FOUND);
+            return new ResponseData<>("404", "No subjects found");
         } else {
-            responseData = new ResponseData<>("200", "Success", subjects);
-            return new ResponseEntity<>(responseData, HttpStatus.OK);
+            return new ResponseData<>("200", "Success", subjects);
         }
     }
 
     @PostMapping
-    public ResponseEntity<Subject> createSubject(@RequestBody Subject subject) {
-        Subject createdSubject = subjectService.createSubject(subject);
-        return new ResponseEntity<>(createdSubject, HttpStatus.CREATED);
+    public ResponseData<Subject> createSubject(@Valid @RequestBody CreateSubjectRequest request) {
+        Subject createdSubject = subjectService.createSubject(request);
+        return new ResponseData<>("201", "Subject created successfully", createdSubject);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Subject> getSubjectById(@PathVariable("id") String id) {
+    public ResponseData<Subject> getSubjectById(@PathVariable("id") String id) {
         Subject subject = subjectService.getSubjectById(id);
         if (subject != null) {
-            return new ResponseEntity<>(subject, HttpStatus.OK);
+            return new ResponseData<>("200", "Subject found", subject);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseData<>("404", "Subject not found");
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Subject> updateSubject(@PathVariable("id") String id, @RequestBody Subject subject) {
-        Subject updatedSubject = subjectService.updateSubject(id, subject);
+    public ResponseData<Subject> updateSubject(@PathVariable String id,
+            @Valid @RequestBody UpdateSubjectRequest request) {
+        Subject updatedSubject = subjectService.updateSubject(id, request);
         if (updatedSubject != null) {
-            return new ResponseEntity<>(updatedSubject, HttpStatus.OK);
+            return new ResponseData<>("200", "Subject updated successfully", updatedSubject);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseData<>("404", "Subject not found");
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSubject(@PathVariable("id") String id) {
-        if (subjectService.deleteSubject(id)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PutMapping("/{subjectId}/status")
+    public ResponseData<String> updateSubjectStatus(@PathVariable String subjectId) {
+        subjectService.updateSubjectStatus(subjectId);
+        return new ResponseData<>("200", "Subject status updated successfully");
     }
 
 }
