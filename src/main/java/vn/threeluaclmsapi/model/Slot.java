@@ -24,7 +24,7 @@ public class Slot extends AbstractEntity {
     private LocalTime startTime;
 
     @Column(name = "slot_end_time")
-    private LocalTime endTIme;
+    private LocalTime endTime;
 
     @OneToMany(mappedBy = "slot")
     private List<Schedule> slotSchedules;

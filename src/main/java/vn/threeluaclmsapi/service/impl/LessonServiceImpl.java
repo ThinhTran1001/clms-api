@@ -20,7 +20,6 @@ import vn.threeluaclmsapi.exception.ResourceNotFoundException;
 import vn.threeluaclmsapi.model.Attachment;
 import vn.threeluaclmsapi.model.Course;
 import vn.threeluaclmsapi.model.Lesson;
-import vn.threeluaclmsapi.model.Subject;
 import vn.threeluaclmsapi.repository.CourseRepository;
 import vn.threeluaclmsapi.repository.LessonRepository;
 import vn.threeluaclmsapi.service.LessonService;
