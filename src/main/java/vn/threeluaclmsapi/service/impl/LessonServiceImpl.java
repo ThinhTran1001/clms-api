@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.List;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.logging.Logger;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -19,6 +20,7 @@ import vn.threeluaclmsapi.exception.ResourceNotFoundException;
 import vn.threeluaclmsapi.model.Attachment;
 import vn.threeluaclmsapi.model.Course;
 import vn.threeluaclmsapi.model.Lesson;
+import vn.threeluaclmsapi.model.Subject;
 import vn.threeluaclmsapi.repository.CourseRepository;
 import vn.threeluaclmsapi.repository.LessonRepository;
 import vn.threeluaclmsapi.service.LessonService;
@@ -41,8 +43,11 @@ public class LessonServiceImpl implements LessonService {
                 throw new IllegalArgumentException("Course ID cannot be null or empty");
             }
 
+            Logger logger = Logger.getLogger(LessonServiceImpl.class.getName());
+            logger.info("course with title: " + request.getCourseId());
+
             Course course = courseRepository.findById(request.getCourseId())
-                    .orElseThrow(() -> new RuntimeException("Course not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
             Lesson lesson = Lesson.builder()
                     .lessonTitle(request.getLessonTitle())
@@ -103,18 +108,20 @@ public class LessonServiceImpl implements LessonService {
                 lesson.setCourse(course);
             }
 
-            if (request.getAttachments() != null && !request.getAttachments().isEmpty()) {
-                String baseDir = new File("").getAbsolutePath();
-                String uploadDir = baseDir + File.separator + "uploads" + File.separator;
-                File uploadDirFile = new File(uploadDir);
-                if (!uploadDirFile.exists()) {
-                    uploadDirFile.mkdirs();
-                }
+            String baseDir = new File("").getAbsolutePath();
+            String uploadDir = baseDir + File.separator + "uploads" + File.separator;
+            File uploadDirFile = new File(uploadDir);
+            if (!uploadDirFile.exists()) {
+                uploadDirFile.mkdirs();
+            }
 
+            if (request.getAttachments() != null && !request.getAttachments().isEmpty()) {
                 List<Attachment> attachments = new ArrayList<>();
+
                 for (MultipartFile file : request.getAttachments()) {
-                    String uniqueFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-                    String filePath = uploadDir + File.separator + uniqueFileName;
+                    String uniqueFileName = UUID.randomUUID().toString() + "_"
+                            + file.getOriginalFilename();
+                    String filePath = uploadDir + uniqueFileName;
 
                     file.transferTo(new File(filePath));
 

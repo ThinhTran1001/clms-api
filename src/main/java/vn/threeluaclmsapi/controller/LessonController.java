@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import vn.threeluaclmsapi.dto.request.course.CreateCourseRequest;
 import vn.threeluaclmsapi.dto.request.lesson.CreateLessonRequest;
 import vn.threeluaclmsapi.dto.request.lesson.UpdateLessonRequest;
 import vn.threeluaclmsapi.dto.response.LessonResponse;
@@ -24,9 +25,9 @@ public class LessonController {
     private final LessonService lessonService;
 
     @PostMapping
-    public ResponseData<?> createLesson(@RequestBody @Valid CreateLessonRequest request) throws IOException {
+    public ResponseData<String> createCourse(@ModelAttribute @Valid CreateLessonRequest request) throws IOException {
         lessonService.createLesson(request);
-        return new ResponseData<>(HttpStatus.CREATED.toString(), "Created lesson successfully!");
+        return new ResponseData<>("201", "Lesson created successfully");
     }
 
     @GetMapping
