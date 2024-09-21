@@ -1,19 +1,19 @@
 package vn.threeluaclmsapi.service;
 
+import vn.threeluaclmsapi.dto.request.subject.CreateSubjectRequest;
+import vn.threeluaclmsapi.dto.request.subject.UpdateSubjectRequest;
 import vn.threeluaclmsapi.model.Subject;
 
 import java.util.List;
-
-import org.hibernate.validator.constraints.UUID;
 
 public interface SubjectService {
     List<Subject> getAllSubjects();
 
     Subject getSubjectById(String courseId);
 
-    Subject createSubject(Subject subject);
+    Subject createSubject(CreateSubjectRequest request);
 
-    Subject updateSubject(String id, Subject subject);
+    Subject updateSubject(String id, UpdateSubjectRequest request);
 
-    boolean deleteSubject(String id);
+    void updateSubjectStatus(String subjectId);
 }

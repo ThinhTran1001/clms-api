@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.UUID;
 import java.io.IOException;
 
-import vn.threeluaclmsapi.dto.request.CreateCourseRequest;
-import vn.threeluaclmsapi.dto.request.UpdateCourseRequest;
+import vn.threeluaclmsapi.dto.request.course.CreateCourseRequest;
+import vn.threeluaclmsapi.dto.request.course.UpdateCourseRequest;
 import vn.threeluaclmsapi.dto.response.CourseDetailsResponse;
 
 public interface CourseService {
@@ -17,5 +17,5 @@ public interface CourseService {
 
     void updateCourse(UUID courseId, UpdateCourseRequest request);
 
-    void deleteCourse(UUID courseId);
+    void updateCourseStatus(String courseId);
 }

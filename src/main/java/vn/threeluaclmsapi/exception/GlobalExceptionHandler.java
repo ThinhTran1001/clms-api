@@ -23,14 +23,27 @@ public class GlobalExceptionHandler {
         error.setPath(request.getDescription(false).replace("uri=", ""));
         error.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
         String message = ex.getMessage();
-        if(ex instanceof MethodArgumentNotValidException) {
+        if (ex instanceof MethodArgumentNotValidException) {
             int start = ex.getMessage().lastIndexOf("[");
             int end = ex.getMessage().lastIndexOf("]");
             message = message.substring(start + 1, end - 1);
             error.setMessage(message);
-        } else if(ex instanceof RuntimeException) {
+        } else if (ex instanceof RuntimeException) {
             error.setMessage(message);
         }
+
+        return error;
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseError handleResourceAlreadyExists(ResourceAlreadyExistsException ex, WebRequest request) {
+        ResponseError error = new ResponseError();
+        error.setTimestamp(new Date());
+        error.setStatus(HttpStatus.CONFLICT.value());
+        error.setPath(request.getDescription(false).replace("uri=", ""));
+        error.setError(HttpStatus.CONFLICT.getReasonPhrase());
+        error.setMessage(ex.getMessage());
 
         return error;
     }

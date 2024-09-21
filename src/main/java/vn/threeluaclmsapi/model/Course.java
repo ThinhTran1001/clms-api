@@ -19,6 +19,9 @@ public class Course extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(name = "status")
+    private boolean status;
+
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
