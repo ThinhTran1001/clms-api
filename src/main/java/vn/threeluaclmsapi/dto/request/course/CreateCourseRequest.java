@@ -1,4 +1,4 @@
-package vn.threeluaclmsapi.dto.request;
+package vn.threeluaclmsapi.dto.request.course;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

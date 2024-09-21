@@ -19,6 +19,9 @@ public class Lesson extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(name = "status")
+    private Boolean status;
+
     @Column(name = "lesson_title")
     private String lessonTitle;
 
