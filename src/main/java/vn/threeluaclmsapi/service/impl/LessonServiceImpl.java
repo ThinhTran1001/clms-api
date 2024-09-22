@@ -163,6 +163,7 @@ public class LessonServiceImpl implements LessonService {
             List<LessonResponse> lessonResponses = new ArrayList<>();
             for (Lesson lesson : lessons) {
                 LessonResponse lessonResponse = new LessonResponse();
+                lessonResponse.setId(lesson.getId());
                 lessonResponse.setLessonTitle(lesson.getLessonTitle());
                 lessonResponse.setLessonDescription(lesson.getLessonDescription());
                 lessonResponse.setStatus(lesson.getStatus());
