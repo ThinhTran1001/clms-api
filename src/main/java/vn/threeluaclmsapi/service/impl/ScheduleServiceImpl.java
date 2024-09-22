@@ -1,9 +1,11 @@
 package vn.threeluaclmsapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.threeluaclmsapi.dto.request.schedule.CreateScheduleRequest;
+import vn.threeluaclmsapi.dto.response.schedule.ScheduleResponse;
 import vn.threeluaclmsapi.exception.ResourceNotFoundException;
 import vn.threeluaclmsapi.model.Classroom;
 import vn.threeluaclmsapi.model.Lesson;
@@ -14,9 +16,17 @@ import vn.threeluaclmsapi.repository.LessonRepository;
 import vn.threeluaclmsapi.repository.ScheduleRepository;
 import vn.threeluaclmsapi.repository.SlotRepository;
 import vn.threeluaclmsapi.service.ScheduleService;
+import vn.threeluaclmsapi.util.common.DateUtils;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
@@ -32,7 +42,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public String createSchedule(CreateScheduleRequest request) {
         Classroom classroom = classroomRepository.findById(request.getClassroomId())
                 .orElseThrow(() -> new ResourceNotFoundException("Classroom not found"));
-
+        log.info(classroom.toString());
         Lesson lesson = lessonRepository.findById(request.getLessonId())
                 .orElseThrow(() -> new ResourceNotFoundException("Lesson not found"));
 
@@ -48,5 +58,28 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleRepository.save(schedule);
 
         return schedule.getId();
+    }
+
+    @Override
+    public List<ScheduleResponse> getAllByClassroomName(String classroomName) {
+        List<Object[]> schedules = scheduleRepository.findAllByClassroomName(classroomName);
+        List<ScheduleResponse> scheduleResponses = new ArrayList<>();
+        for (Object[] schedule : schedules) {
+            ScheduleResponse scheduleResponse = new ScheduleResponse();
+            scheduleResponse.setClassroomName((String) schedule[0]);
+            scheduleResponse.setSubjectCode((String) schedule[1]);
+            scheduleResponse.setSubjectName((String) schedule[2]);
+
+            LocalTime startTime = (LocalTime) schedule[3];
+            LocalTime endTime = (LocalTime) schedule[4];
+            String scheduleDate = (String) schedule[5];
+
+            String formattedSchedule = DateUtils.formatSchedule(
+                    startTime.toString(), endTime.toString(), scheduleDate
+            );
+            scheduleResponse.setScheduleDate(formattedSchedule);
+            scheduleResponses.add(scheduleResponse);
+        }
+        return scheduleResponses;
     }
 }

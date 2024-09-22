@@ -1,5 +1,6 @@
 package vn.threeluaclmsapi.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class CategoryController {
         if (categories.isEmpty()) {
             return new ResponseData<>("404", "No categories found");
         } else {
-            return new ResponseData<>("200", "Success", categories);
+            return new ResponseData<>(HttpStatus.OK.toString(), "Success", categories);
         }
     }
 
