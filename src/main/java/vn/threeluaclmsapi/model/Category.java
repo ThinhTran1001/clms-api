@@ -1,6 +1,7 @@
 package vn.threeluaclmsapi.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.Builder.Default;
 
@@ -24,10 +25,11 @@ public class Category extends AbstractEntity {
     private String id;
 
     @Column(name = "category_name")
+    @Size(min = 1, max = 255, message = "Category name must be between 1 and 255 characters")
     private String categoryName;
 
     @Column(name = "category_status")
-    private Boolean categoryStatus = true;
+    private Boolean status;
 
     @OneToMany(mappedBy = "category")
     @JsonIgnore

@@ -6,9 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import vn.threeluaclmsapi.dto.request.CreateClassroomRequest;
-import vn.threeluaclmsapi.dto.response.ClassroomDetailResponse;
-import vn.threeluaclmsapi.dto.response.ClassroomResponse;
+import vn.threeluaclmsapi.dto.request.classroom.CreateClassroomRequest;
+import vn.threeluaclmsapi.dto.response.classroom.ClassroomDetailResponse;
+import vn.threeluaclmsapi.dto.response.classroom.ClassroomResponse;
 import vn.threeluaclmsapi.dto.response.ResponseData;
 import vn.threeluaclmsapi.service.ClassroomService;
 

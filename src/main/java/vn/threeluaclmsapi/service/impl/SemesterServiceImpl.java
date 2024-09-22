@@ -2,8 +2,8 @@ package vn.threeluaclmsapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import vn.threeluaclmsapi.dto.request.CreateSemesterRequest;
-import vn.threeluaclmsapi.dto.response.SemesterResponse;
+import vn.threeluaclmsapi.dto.request.semester.CreateSemesterRequest;
+import vn.threeluaclmsapi.dto.response.semester.SemesterResponse;
 import vn.threeluaclmsapi.model.Semester;
 import vn.threeluaclmsapi.repository.SemesterRepository;
 import vn.threeluaclmsapi.service.SemesterService;

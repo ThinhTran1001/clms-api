@@ -8,10 +8,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import vn.threeluaclmsapi.dto.request.CreateClassroomRequest;
-import vn.threeluaclmsapi.dto.response.ClassroomDetailResponse;
-import vn.threeluaclmsapi.dto.response.ClassroomResponse;
-import vn.threeluaclmsapi.dto.response.StudentResponse;
+import vn.threeluaclmsapi.dto.request.classroom.CreateClassroomRequest;
+import vn.threeluaclmsapi.dto.response.classroom.ClassroomDetailResponse;
+import vn.threeluaclmsapi.dto.response.classroom.ClassroomResponse;
+import vn.threeluaclmsapi.dto.response.student.StudentResponse;
 import vn.threeluaclmsapi.exception.CommonException;
 import vn.threeluaclmsapi.exception.ResourceNotFoundException;
 import vn.threeluaclmsapi.model.Classroom;
@@ -29,11 +29,8 @@ import vn.threeluaclmsapi.util.enums.Gender;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -119,12 +116,15 @@ public class ClassroomServiceImpl implements ClassroomService {
                 // convert to date string YYYY-MM-dd
                 String dateOfBirth = DateUtils.convertDateFormatFromExcel(getCellValueAsString(row.getCell(4)));
 
-                User user = userRepository.findByEmail(email)
-                        .orElseGet(() -> createUserForImport(fullName, email, address, gender, dateOfBirth));
+                if(userRepository.findByEmail(email).isPresent()){
+                    throw new CommonException("Email cannot duplicated!");
+                }
+
+                User user = createUserForImport(fullName, email, address, gender, dateOfBirth);
 
                 String studentCode = getCellValueAsString(row.getCell(5));
                 String major = getCellValueAsString(row.getCell(6));
-                Student student = createStudentForImport(user, studentCode, major);
+                createStudentForImport(user, studentCode, major);
 
                 createStudentClassroom(classroom, user);
             }
@@ -148,12 +148,12 @@ public class ClassroomServiceImpl implements ClassroomService {
         return userRepository.save(user);
     }
 
-    private Student createStudentForImport(User user, String studentCode, String major) {
+    private void createStudentForImport(User user, String studentCode, String major) {
         Student student = new Student();
         student.setUser(user);
         student.setStudentCode(studentCode);
         student.setMajor(major);
-        return studentRepository.save(student);
+        studentRepository.save(student);
     }
 
     private void createStudentClassroom(Classroom classroom, User user) {

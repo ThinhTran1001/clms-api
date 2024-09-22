@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.hibernate.validator.constraints.UniqueElements;
 import vn.threeluaclmsapi.util.enums.Gender;
 
 import java.util.Date;

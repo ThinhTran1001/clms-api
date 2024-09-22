@@ -5,8 +5,6 @@ import lombok.*;
 
 import java.util.List;
 
-import org.hibernate.mapping.Set;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -33,7 +31,7 @@ public class Classroom extends AbstractEntity {
     private List<StudentClassroom> classroomStudents;
 
     @OneToMany(mappedBy = "classroom")
-    private List<ClassroomSchedule> classroomSchedules;
+    private List<Schedule> schedules;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Course> courses;

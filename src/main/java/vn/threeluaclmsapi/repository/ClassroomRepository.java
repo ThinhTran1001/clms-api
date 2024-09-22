@@ -3,7 +3,6 @@ package vn.threeluaclmsapi.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import vn.threeluaclmsapi.dto.response.StudentResponse;
 import vn.threeluaclmsapi.model.Classroom;
 
 import java.util.List;
