@@ -16,4 +16,6 @@ public interface SubjectService {
     Subject updateSubject(String id, UpdateSubjectRequest request);
 
     void updateSubjectStatus(String subjectId);
+
+    List<Subject> listSubjectByCategoryId(String categoryId);
 }
