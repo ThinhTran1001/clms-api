@@ -23,14 +23,11 @@ public class User extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "password")
     private String password;
-
-    @Column(name = "email")
-    private String email;
 
     @Column(name = "dob")
     private Date dob;
@@ -45,6 +42,9 @@ public class User extends AbstractEntity {
 
     @Column(name = "address")
     private String address;
+
+    @Column(name="status")
+    private boolean status;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Student student;
