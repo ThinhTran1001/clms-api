@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import vn.threeluaclmsapi.dto.request.classroom.CreateClassroomRequest;
+import vn.threeluaclmsapi.dto.request.classroom.ClassroomRequest;
 import vn.threeluaclmsapi.dto.response.classroom.ClassroomDetailResponse;
 import vn.threeluaclmsapi.dto.response.classroom.ClassroomResponse;
 import vn.threeluaclmsapi.dto.response.ResponseData;
@@ -23,7 +23,7 @@ public class ClassroomController {
     private final ClassroomService classroomService;
 
     @PostMapping()
-    public ResponseData<?> createClassroom(@RequestBody @Valid CreateClassroomRequest request){
+    public ResponseData<?> createClassroom(@RequestBody @Valid ClassroomRequest request){
         classroomService.createClassroom(request);
         log.info("Classroom created");
         return new ResponseData<>(HttpStatus.CREATED.toString(), "Created classroom successfully!");
@@ -56,4 +56,15 @@ public class ClassroomController {
                 "add student list to classroom successfully!");
     }
 
+    @PutMapping("/{id}")
+    public ResponseData<?> updateClassroom(@RequestBody ClassroomRequest request, @PathVariable String id){
+        classroomService.updateClassroom(request, id);
+        return new ResponseData<>(HttpStatus.OK.toString(), "Classroom updated successfully!");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseData<?> changeClassroomStatus(@PathVariable String id){
+        classroomService.changeStatus(id);
+        return new ResponseData<>(HttpStatus.OK.toString(), "Classroom updated successfully!");
+    }
 }

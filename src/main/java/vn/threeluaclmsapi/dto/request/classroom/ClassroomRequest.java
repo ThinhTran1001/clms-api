@@ -9,7 +9,7 @@ import vn.threeluaclmsapi.util.constant.ValidationConstant;
 import java.io.Serializable;
 
 @Getter
-public class CreateClassroomRequest implements Serializable {
+public class ClassroomRequest implements Serializable {
 
     @NotBlank(message = "Tên lớp không được để trống!")
     @Pattern(regexp = "^[A-Z]{2}\\d{4}$", message = "Tên lớp không hợp lệ, phải có 2 chữ cái viết hoa và 4 số")
