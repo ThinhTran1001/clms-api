@@ -63,4 +63,14 @@ public class SubjectController {
         return new ResponseData<>("200", "Subject status updated successfully");
     }
 
+    @GetMapping("/category")
+    public ResponseData<List<Subject>> listSubjectByCategoryId(String categoryId) {
+        List<Subject> subjects = subjectService.listSubjectByCategoryId(categoryId);
+        if (subjects.isEmpty()) {
+            return new ResponseData<>("404", "No subjects found");
+        } else {
+            return new ResponseData<>("200", "Success", subjects);
+        }
+    }
+
 }
