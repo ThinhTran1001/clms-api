@@ -20,7 +20,10 @@ public interface ScheduleRepository extends JpaRepository<Schedule, String> {
             "WHERE c.classroomName LIKE %:classroomName%")
     List<Object[]> findAllByClassroomName(String classroomName);
 
-    Schedule findByScheduleDateAndSlot(LocalDate scheduleDate, Slot slot);
+    @Query("SELECT s " +
+            "FROM Schedule s " +
+            "WHERE s.scheduleDate = :scheduleDate AND s.slot.id = :slotId")
+    Schedule findByScheduleDateAndSlot(LocalDate scheduleDate, Integer slotId);
 
     @Query("SELECT COUNT(s) " +
             "FROM Schedule s " +

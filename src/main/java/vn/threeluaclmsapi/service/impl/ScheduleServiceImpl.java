@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.threeluaclmsapi.dto.request.schedule.CreateScheduleRequest;
+import vn.threeluaclmsapi.dto.request.schedule.UpdateScheduleRequest;
 import vn.threeluaclmsapi.dto.response.schedule.ScheduleResponse;
 import vn.threeluaclmsapi.exception.CommonException;
 import vn.threeluaclmsapi.exception.ResourceNotFoundException;
@@ -56,7 +57,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         LocalDate scheduleDate = DateUtils.convertStringToLocalDate(request.getScheduleDate());
 
-        if(scheduleRepository.findByScheduleDateAndSlot(scheduleDate, slot) != null){
+        if(scheduleRepository.findByScheduleDateAndSlot(scheduleDate, request.getSlotId()) != null){
             throw new CommonException("Classroom has already have a schedule in the same date!");
         }
 
@@ -95,14 +96,34 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             LocalTime startTime = (LocalTime) schedule[3];
             LocalTime endTime = (LocalTime) schedule[4];
-            String scheduleDate = (String) schedule[5];
+            LocalDate scheduleDate = (LocalDate) schedule[5];
 
             String formattedSchedule = DateUtils.formatSchedule(
-                    startTime.toString(), endTime.toString(), scheduleDate
+                    startTime.toString(), endTime.toString(), scheduleDate.toString()
             );
             scheduleResponse.setScheduleDate(formattedSchedule);
             scheduleResponses.add(scheduleResponse);
         }
         return scheduleResponses;
+    }
+
+    @Override
+    public void updateSchedule(UpdateScheduleRequest request, String id) {
+        Schedule existedSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Schedule not found!"));
+
+        Slot slot = slotRepository.findById(request.getSlotId())
+                .orElseThrow(() -> new ResourceNotFoundException("Slot not found!"));
+
+        LocalDate scheduleDate = DateUtils.convertStringToLocalDate(request.getScheduleDate());
+
+        if(scheduleRepository.findByScheduleDateAndSlot(scheduleDate, request.getSlotId()) != null){
+            throw new CommonException("Classroom has already have a schedule in the same date!");
+        }
+
+        existedSchedule.setSlot(slot);
+        existedSchedule.setScheduleDate(scheduleDate);
+
+        scheduleRepository.save(existedSchedule);
     }
 }
