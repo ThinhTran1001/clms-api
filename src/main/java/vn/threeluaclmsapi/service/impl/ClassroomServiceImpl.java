@@ -8,7 +8,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import vn.threeluaclmsapi.dto.request.classroom.CreateClassroomRequest;
+import vn.threeluaclmsapi.dto.request.classroom.ClassroomRequest;
 import vn.threeluaclmsapi.dto.response.classroom.ClassroomDetailResponse;
 import vn.threeluaclmsapi.dto.response.classroom.ClassroomResponse;
 import vn.threeluaclmsapi.dto.response.student.StudentResponse;
@@ -45,7 +45,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     private final StudentClassroomRepository studentClassroomRepository;
 
     @Override
-    public void createClassroom(CreateClassroomRequest request) {
+    public void createClassroom(ClassroomRequest request) {
         if(classroomRepository.findByClassroomName(request.getClassroomName()).isPresent()) {
             throw new CommonException("Lớp này da ton tai!");
         }
@@ -131,6 +131,25 @@ public class ClassroomServiceImpl implements ClassroomService {
         } catch (IOException e) {
             throw new RuntimeException("Lỗi khi xử lý file Excel: " + e.getMessage(), e);
         }
+    }
+
+    @Override
+    public void updateClassroom(ClassroomRequest request, String id) {
+        Classroom existedClassroom = classroomRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Classroom with "+ id +" not found"));
+        existedClassroom.setClassroomName(request.getClassroomName());
+        existedClassroom.setCapacity(request.getCapacity());
+
+        classroomRepository.save(existedClassroom);
+    }
+
+    @Override
+    public void changeStatus(String id) {
+        Classroom existedClassroom = classroomRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Classroom with "+ id +" not found"));
+        existedClassroom.setStatus(!existedClassroom.isStatus());
+
+        classroomRepository.save(existedClassroom);
     }
 
     // Get value from Excel cell
