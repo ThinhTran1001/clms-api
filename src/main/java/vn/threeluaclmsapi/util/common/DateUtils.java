@@ -11,6 +11,8 @@ import java.util.Locale;
 
 public class DateUtils {
 
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     public static String convertDateFormatFromExcel(String dateStr) {
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MMM-yyyy");
@@ -35,6 +37,10 @@ public class DateUtils {
         String formattedStartTime = startTime.format(DateTimeFormatter.ofPattern("H:mm"));
         String formattedEndTime = endTime.format(DateTimeFormatter.ofPattern("H:mm"));
 
-        return formattedStartTime + " - " + formattedEndTime + " " + dayOfWeek + " " + date.format(dateFormatter);
+        return formattedStartTime + "-" + formattedEndTime + " " + dayOfWeek + " " + date.format(dateFormatter);
+    }
+
+    public static LocalDate convertStringToLocalDate(String dateString) {
+        return LocalDate.parse(dateString, FORMATTER);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.threeluaclmsapi.dto.request.schedule.CreateScheduleRequest;
 import vn.threeluaclmsapi.dto.response.schedule.ScheduleResponse;
+import vn.threeluaclmsapi.exception.CommonException;
 import vn.threeluaclmsapi.exception.ResourceNotFoundException;
 import vn.threeluaclmsapi.model.Classroom;
 import vn.threeluaclmsapi.model.Lesson;
@@ -18,8 +19,12 @@ import vn.threeluaclmsapi.repository.SlotRepository;
 import vn.threeluaclmsapi.service.ScheduleService;
 import vn.threeluaclmsapi.util.common.DateUtils;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,19 +46,37 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     public String createSchedule(CreateScheduleRequest request) {
         Classroom classroom = classroomRepository.findById(request.getClassroomId())
-                .orElseThrow(() -> new ResourceNotFoundException("Classroom not found"));
-        log.info(classroom.toString());
+                .orElseThrow(() -> new ResourceNotFoundException("Classroom not found!"));
+
         Lesson lesson = lessonRepository.findById(request.getLessonId())
-                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found!"));
 
         Slot slot = slotRepository.findById(request.getSlotId())
-                .orElseThrow(() -> new ResourceNotFoundException("Slot not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Slot not found!"));
+
+        LocalDate scheduleDate = DateUtils.convertStringToLocalDate(request.getScheduleDate());
+
+        if(scheduleRepository.findByScheduleDateAndSlot(scheduleDate, slot) != null){
+            throw new CommonException("Classroom has already have a schedule in the same date!");
+        }
+
+        LocalDate startOfWeek = scheduleDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate endOfWeek = scheduleDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+        Long numberOfSchedulesInWeek = scheduleRepository.countSchedulesInWeek(
+                request.getClassroomId(),
+                startOfWeek,
+                endOfWeek);
+
+        if (numberOfSchedulesInWeek >= 2) {
+            throw new CommonException("Classroom can only have 2 schedules in a week!");
+        }
 
         Schedule schedule = Schedule.builder()
                 .classroom(classroom)
                 .lesson(lesson)
                 .slot(slot)
-                .scheduleDate(request.getScheduleDate())
+                .scheduleDate(scheduleDate)
                 .build();
         scheduleRepository.save(schedule);
 

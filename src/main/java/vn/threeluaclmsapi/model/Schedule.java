@@ -3,6 +3,8 @@ package vn.threeluaclmsapi.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,6 +31,6 @@ public class Schedule extends AbstractEntity {
     private Slot slot;
 
     @Column(name = "schedule_date")
-    private String scheduleDate;
+    private LocalDate scheduleDate;
 
 }
