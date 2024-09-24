@@ -19,4 +19,7 @@ public class CreateSubjectRequest {
     private String subjectCode;
 
     private int credit;
+
+    @NotBlank(message = "Category ID cannot be blank")
+    private String categoryId;
 }

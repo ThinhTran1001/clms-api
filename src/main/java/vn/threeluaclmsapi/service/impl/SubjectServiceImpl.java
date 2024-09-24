@@ -3,6 +3,7 @@ package vn.threeluaclmsapi.service.impl;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import vn.threeluaclmsapi.model.Category;
 import vn.threeluaclmsapi.model.Subject;
 import vn.threeluaclmsapi.repository.SubjectRepository;
 import vn.threeluaclmsapi.service.SubjectService;
@@ -48,9 +49,12 @@ public class SubjectServiceImpl implements SubjectService {
         }
 
         Subject subject = new Subject();
+
         subject.setSubjectName(request.getSubjectName());
         subject.setSubjectCode(request.getSubjectCode());
         subject.setStatus(true);
+        subject.setCredit(request.getCredit() != 0 ? request.getCredit() : subject.getCredit());
+        subject.setCategory(Category.builder().id(request.getCategoryId()).build());
 
         return subjectRepository.save(subject);
     }
@@ -62,6 +66,8 @@ public class SubjectServiceImpl implements SubjectService {
 
         subject.setSubjectName(request.getSubjectName());
         subject.setSubjectCode(request.getSubjectCode());
+        subject.setCredit(request.getCredit() != 0 ? request.getCredit() : subject.getCredit());
+        subject.setCategory(Category.builder().id(request.getCategoryId()).build());
 
         return subjectRepository.save(subject);
     }
@@ -79,4 +85,15 @@ public class SubjectServiceImpl implements SubjectService {
             throw new RuntimeException("Failed to update subject status", e);
         }
     }
+
+    @Override
+    public List<Subject> listSubjectByCategoryId(String categoryId) {
+        try {
+            return subjectRepository.findByCategoryId(categoryId);
+        } catch (Exception e) {
+            log.error("Error while fetching all subjects: {}", e.getMessage(), e);
+            throw new RuntimeException("Failed to fetch subjects", e);
+        }
+    }
+
 }
