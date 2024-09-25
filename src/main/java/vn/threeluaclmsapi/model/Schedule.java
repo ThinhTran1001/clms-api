@@ -30,6 +30,10 @@ public class Schedule extends AbstractEntity {
     @JoinColumn(name = "slot_id")
     private Slot slot;
 
+    @ManyToOne
+    @JoinColumn(name = "instructor_id")
+    private CourseInstructor instructor;
+
     @Column(name = "schedule_date")
     private LocalDate scheduleDate;
 

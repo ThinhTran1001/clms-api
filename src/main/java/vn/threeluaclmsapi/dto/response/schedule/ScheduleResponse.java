@@ -18,5 +18,7 @@ public class ScheduleResponse implements Serializable {
 
     private String scheduleDate;
 
+    private String instructorName;
+
 
 }

@@ -1,7 +1,6 @@
 package vn.threeluaclmsapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.threeluaclmsapi.dto.request.schedule.CreateScheduleRequest;
@@ -10,7 +9,6 @@ import vn.threeluaclmsapi.dto.response.ResponseData;
 import vn.threeluaclmsapi.dto.response.schedule.ScheduleResponse;
 import vn.threeluaclmsapi.service.ScheduleService;
 
-import javax.print.DocFlavor;
 import java.util.List;
 
 @RestController
@@ -26,16 +24,28 @@ public class ScheduleController {
         return new ResponseData<>(HttpStatus.CREATED.toString(), "Schedule created", scheduleId);
     }
 
-    @GetMapping("/{classroomName}")
+    @GetMapping("/classroom/{classroomName}")
     public ResponseData<List<ScheduleResponse>> getScheduleListByClassroomName(@PathVariable String classroomName){
         List<ScheduleResponse> scheduleResponseList = scheduleService.getAllByClassroomName(classroomName);
-        return new ResponseData<>(HttpStatus.OK.toString(), "Schedule list of classroom: "+ classroomName, scheduleResponseList);
+        return new ResponseData<>(
+                HttpStatus.OK.toString(),
+                "Schedule list of classroom: " + classroomName,
+                scheduleResponseList);
     }
 
-    @PutMapping("/{id}")
-    public ResponseData<?> updateSchedule(@RequestBody UpdateScheduleRequest request, @PathVariable String id){
-        scheduleService.updateSchedule(request, id);
+    @PutMapping("/{scheduleId}")
+    public ResponseData<?> updateSchedule(@RequestBody UpdateScheduleRequest request, @PathVariable String scheduleId){
+        scheduleService.updateSchedule(request, scheduleId);
         return new ResponseData<>(HttpStatus.ACCEPTED.toString(), "Schedule updated");
+    }
+
+    @GetMapping("/instructor/{instructorId}")
+    public ResponseData<List<ScheduleResponse>> getScheduleListByInstructorId(@PathVariable String instructorId){
+        List<ScheduleResponse> scheduleResponseList = scheduleService.getAllByInstructor(instructorId);
+        return new ResponseData<>(
+                HttpStatus.OK.toString(),
+                "Schedule list of instructor with id: " + instructorId,
+                scheduleResponseList);
     }
 
 }

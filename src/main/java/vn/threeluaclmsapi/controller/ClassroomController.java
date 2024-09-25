@@ -56,15 +56,16 @@ public class ClassroomController {
                 "add student list to classroom successfully!");
     }
 
-    @PutMapping("/{id}")
-    public ResponseData<?> updateClassroom(@RequestBody ClassroomRequest request, @PathVariable String id){
-        classroomService.updateClassroom(request, id);
+    @PutMapping("/{classroomId}")
+    public ResponseData<?> updateClassroom(@RequestBody @Valid ClassroomRequest request, @PathVariable String classroomId){
+        classroomService.updateClassroom(request, classroomId);
         return new ResponseData<>(HttpStatus.OK.toString(), "Classroom updated successfully!");
     }
 
-    @PutMapping("/{id}")
-    public ResponseData<?> changeClassroomStatus(@PathVariable String id){
-        classroomService.changeStatus(id);
-        return new ResponseData<>(HttpStatus.OK.toString(), "Classroom updated successfully!");
+    @PutMapping("/changeStatus/{classroomId}")
+    public ResponseData<?> changeClassroomStatus(@PathVariable String classroomId){
+        classroomService.changeStatus(classroomId);
+        return new ResponseData<>(HttpStatus.OK.toString(), "Change classroom status successfully!");
     }
+
 }
