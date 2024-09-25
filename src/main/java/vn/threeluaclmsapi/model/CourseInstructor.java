@@ -3,6 +3,8 @@ package vn.threeluaclmsapi.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,5 +25,8 @@ public class CourseInstructor extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+
+    @OneToMany(mappedBy = "instructor")
+    private List<Schedule> schedules;
 
 }

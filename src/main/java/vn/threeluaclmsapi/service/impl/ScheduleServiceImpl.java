@@ -23,11 +23,8 @@ import vn.threeluaclmsapi.util.common.DateUtils;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -87,27 +84,17 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public List<ScheduleResponse> getAllByClassroomName(String classroomName) {
         List<Object[]> schedules = scheduleRepository.findAllByClassroomName(classroomName);
-        List<ScheduleResponse> scheduleResponses = new ArrayList<>();
-        for (Object[] schedule : schedules) {
-            ScheduleResponse scheduleResponse = new ScheduleResponse();
-            scheduleResponse.setClassroomName((String) schedule[0]);
-            scheduleResponse.setSubjectCode((String) schedule[1]);
-            scheduleResponse.setSubjectName((String) schedule[2]);
-
-            LocalTime startTime = (LocalTime) schedule[3];
-            LocalTime endTime = (LocalTime) schedule[4];
-            LocalDate scheduleDate = (LocalDate) schedule[5];
-
-            String formattedSchedule = DateUtils.formatSchedule(
-                    startTime.toString(), endTime.toString(), scheduleDate.toString()
-            );
-            scheduleResponse.setScheduleDate(formattedSchedule);
-            scheduleResponses.add(scheduleResponse);
-        }
-        return scheduleResponses;
+        return mapSchedulesToResponses(schedules);
     }
 
     @Override
+    public List<ScheduleResponse> getAllByInstructor(String instructorId) {
+        List<Object[]> schedules = scheduleRepository.findAllByInstructorId(instructorId);
+        return mapSchedulesToResponses(schedules);
+    }
+
+    @Override
+    @Transactional
     public void updateSchedule(UpdateScheduleRequest request, String id) {
         Schedule existedSchedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Schedule not found!"));
@@ -125,5 +112,32 @@ public class ScheduleServiceImpl implements ScheduleService {
         existedSchedule.setScheduleDate(scheduleDate);
 
         scheduleRepository.save(existedSchedule);
+    }
+
+    private ScheduleResponse mapToScheduleResponse(Object[] schedule) {
+        ScheduleResponse scheduleResponse = new ScheduleResponse();
+        scheduleResponse.setClassroomName((String) schedule[0]);
+        scheduleResponse.setSubjectCode((String) schedule[1]);
+        scheduleResponse.setSubjectName((String) schedule[2]);
+
+        LocalTime startTime = (LocalTime) schedule[3];
+        LocalTime endTime = (LocalTime) schedule[4];
+        LocalDate scheduleDate = (LocalDate) schedule[5];
+        String formattedSchedule = DateUtils.formatSchedule(
+                startTime.toString(), endTime.toString(), scheduleDate.toString()
+        );
+
+        scheduleResponse.setScheduleDate(formattedSchedule);
+        scheduleResponse.setInstructorName((String) schedule[6]);
+
+        return scheduleResponse;
+    }
+
+    private List<ScheduleResponse> mapSchedulesToResponses(List<Object[]> schedules) {
+        List<ScheduleResponse> scheduleResponses = new ArrayList<>();
+        for (Object[] schedule : schedules) {
+            scheduleResponses.add(mapToScheduleResponse(schedule));
+        }
+        return scheduleResponses;
     }
 }
