@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, String> {
 
+
     @Query("SELECT c.classroomName, sub.subjectCode, sub.subjectName, s.slot.startTime, " +
             "s.slot.endTime, s.scheduleDate, s.instructor.user.fullName " +
             "FROM Schedule s " +
