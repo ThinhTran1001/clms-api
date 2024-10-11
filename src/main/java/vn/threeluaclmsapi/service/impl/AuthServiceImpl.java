@@ -27,9 +27,10 @@ public class AuthServiceImpl implements AuthService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("Email not found"));
         String accessToken = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
         return TokenResponse.builder()
-                .accessToken("access-token")
-                .refreshToken("refresh-token")
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .userId(user.getId())
                 .build();
     }

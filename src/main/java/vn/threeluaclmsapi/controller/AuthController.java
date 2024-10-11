@@ -3,6 +3,7 @@ package vn.threeluaclmsapi.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseData<TokenResponse> login(@RequestBody @Valid SignInRequest request) {
-        return new ResponseData<>(HttpStatus.OK.toString(), "authenticate", authService.authenticate(request));
+    public ResponseEntity<TokenResponse> login(@RequestBody @Valid SignInRequest request) {
+        return new ResponseEntity<>(authService.authenticate(request), HttpStatus.OK);
     }
 
     @PostMapping("/logout")
