@@ -1,6 +1,8 @@
 package vn.threeluaclmsapi.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import vn.threeluaclmsapi.dto.request.CreateUserRequest;
 import vn.threeluaclmsapi.dto.response.UserResponse;
@@ -14,10 +16,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    @Override
+    public UserDetailsService userDetailsService() {
+        return email -> userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Email not found!"));
+    }
 
     @Override
     public List<UserResponse> getAllUsers() {
