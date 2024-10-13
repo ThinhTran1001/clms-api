@@ -1,13 +1,11 @@
 package vn.threeluaclmsapi.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vn.threeluaclmsapi.dto.request.SignInRequest;
 import vn.threeluaclmsapi.dto.response.ResponseData;
 import vn.threeluaclmsapi.dto.response.TokenResponse;
@@ -25,14 +23,14 @@ public class AuthController {
         return new ResponseEntity<>(authService.authenticate(request), HttpStatus.OK);
     }
 
-    @PostMapping("/logout")
-    public String logout() {
-        return "logout success!";
+    @PostMapping("/refresh")
+    public ResponseEntity<TokenResponse> refresh(HttpServletRequest request){
+        return new ResponseEntity<>(authService.refresh(request), HttpStatus.OK);
     }
 
-    @PostMapping
-    public String refreshToken(){
-        return "refresh token success!";
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        return new ResponseEntity<>(authService.logout(request), HttpStatus.OK);
     }
 
 }
