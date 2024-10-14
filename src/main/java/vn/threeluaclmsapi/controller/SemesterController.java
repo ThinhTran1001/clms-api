@@ -3,6 +3,7 @@ package vn.threeluaclmsapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vn.threeluaclmsapi.dto.request.semester.CreateSemesterRequest;
 import vn.threeluaclmsapi.dto.response.ResponseData;
@@ -18,12 +19,14 @@ public class SemesterController {
 
     private final SemesterService semesterService;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping()
     public ResponseData<?> createSemester(@RequestBody CreateSemesterRequest request) {
         semesterService.createSemester(request);
         return new ResponseData<>(HttpStatus.CREATED.toString(), "Semester created successfully");
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping()
     public ResponseData<List<SemesterResponse>> getAllSemester(){
         List<SemesterResponse> list = semesterService.getAllSemester();

@@ -1,6 +1,7 @@
 package vn.threeluaclmsapi.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -20,6 +21,7 @@ public class SubjectController {
 
     private final SubjectService subjectService;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseData<List<Subject>> getAllSubjects() {
         List<Subject> subjects = subjectService.getAllSubjects();
@@ -30,12 +32,14 @@ public class SubjectController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseData<Subject> createSubject(@Valid @RequestBody CreateSubjectRequest request) {
         Subject createdSubject = subjectService.createSubject(request);
         return new ResponseData<>("201", "Subject created successfully", createdSubject);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseData<Subject> getSubjectById(@PathVariable("id") String id) {
         Subject subject = subjectService.getSubjectById(id);
@@ -46,6 +50,7 @@ public class SubjectController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseData<Subject> updateSubject(@PathVariable String id,
             @Valid @RequestBody UpdateSubjectRequest request) {
@@ -57,12 +62,14 @@ public class SubjectController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{subjectId}/status")
     public ResponseData<String> updateSubjectStatus(@PathVariable String subjectId) {
         subjectService.updateSubjectStatus(subjectId);
         return new ResponseData<>("200", "Subject status updated successfully");
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/category")
     public ResponseData<List<Subject>> listSubjectByCategoryId(String categoryId) {
         List<Subject> subjects = subjectService.listSubjectByCategoryId(categoryId);

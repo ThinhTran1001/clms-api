@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.threeluaclmsapi.dto.request.classroom.ClassroomRequest;
@@ -29,6 +30,7 @@ public class ClassroomController {
         return new ResponseData<>(HttpStatus.CREATED.toString(), "Created classroom successfully!");
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     @GetMapping()
     public ResponseData<List<ClassroomResponse>> getAllClassrooms(){
         List<ClassroomResponse> classroomResponseList = classroomService.getAllClassroom();
@@ -46,6 +48,7 @@ public class ClassroomController {
                 classroomDetailResponse);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{classroomId}/import-student")
     public ResponseData<?> importStudentListToClassroom(
             @PathVariable String classroomId,

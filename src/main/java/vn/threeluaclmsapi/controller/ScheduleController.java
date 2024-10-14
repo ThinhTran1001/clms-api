@@ -2,6 +2,7 @@ package vn.threeluaclmsapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vn.threeluaclmsapi.dto.request.schedule.CreateScheduleRequest;
 import vn.threeluaclmsapi.dto.request.schedule.UpdateScheduleRequest;
@@ -18,12 +19,14 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @PostMapping
     public ResponseData<String> createSchedule(@RequestBody CreateScheduleRequest request){
         String scheduleId = scheduleService.createSchedule(request);
         return new ResponseData<>(HttpStatus.CREATED.toString(), "Schedule created", scheduleId);
     }
 
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT')")
     @GetMapping("/classroom/{classroomName}")
     public ResponseData<List<ScheduleResponse>> getScheduleListByClassroomName(@PathVariable String classroomName){
         List<ScheduleResponse> scheduleResponseList = scheduleService.getAllByClassroomName(classroomName);
@@ -33,12 +36,14 @@ public class ScheduleController {
                 scheduleResponseList);
     }
 
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @PutMapping("/{scheduleId}")
     public ResponseData<?> updateSchedule(@RequestBody UpdateScheduleRequest request, @PathVariable String scheduleId){
         scheduleService.updateSchedule(request, scheduleId);
         return new ResponseData<>(HttpStatus.ACCEPTED.toString(), "Schedule updated");
     }
 
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @GetMapping("/instructor/{instructorId}")
     public ResponseData<List<ScheduleResponse>> getScheduleListByInstructorId(@PathVariable String instructorId){
         List<ScheduleResponse> scheduleResponseList = scheduleService.getAllByInstructor(instructorId);
@@ -48,6 +53,7 @@ public class ScheduleController {
                 scheduleResponseList);
     }
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @GetMapping("/my-schedule")
     public ResponseData<List<ScheduleResponse>> getMySchedule(){
         return new ResponseData<>(HttpStatus.OK.toString(), "Schedule list");
