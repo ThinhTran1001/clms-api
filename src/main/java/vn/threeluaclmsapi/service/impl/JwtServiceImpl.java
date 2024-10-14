@@ -8,19 +8,21 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import vn.threeluaclmsapi.model.Token;
+import vn.threeluaclmsapi.model.User;
 import vn.threeluaclmsapi.repository.TokenRepository;
 import vn.threeluaclmsapi.service.JwtService;
+import vn.threeluaclmsapi.util.enums.Role;
 import vn.threeluaclmsapi.util.enums.TokenType;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static vn.threeluaclmsapi.util.enums.TokenType.ACCESS_TOKEN;
 import static vn.threeluaclmsapi.util.enums.TokenType.REFRESH_TOKEN;
@@ -67,6 +69,10 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private String generateToken(Map<String, Object> claims, UserDetails userDetails) {
+        String roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+        claims.put("role", roles);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
@@ -77,6 +83,8 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private String generateRefreshToken(Map<String, Object> claims, UserDetails userDetails) {
+        claims.put("role", userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).collect(Collectors.joining(",")));
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
@@ -114,3 +122,4 @@ public class JwtServiceImpl implements JwtService {
     }
 
 }
+

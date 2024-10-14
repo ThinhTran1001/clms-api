@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,7 @@ public class CourseController {
 
     private final CourseService courseService;
 
+    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER')")
     @GetMapping
     public ResponseData<List<CourseDetailsResponse>> getAllCourses() {
         List<CourseDetailsResponse> courses = courseService.listAllCourses();
@@ -32,12 +34,14 @@ public class CourseController {
         return new ResponseData<>("200", "Success", courses);
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping
     public ResponseData<String> createCourse(@ModelAttribute @Valid CreateCourseRequest request) throws IOException {
         courseService.createCourse(request);
         return new ResponseData<>("201", "Course created successfully");
     }
 
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT')")
     @GetMapping("/{courseId}")
     public ResponseData<CourseDetailsResponse> viewCourse(@PathVariable UUID courseId) {
         CourseDetailsResponse courseDetails = courseService.viewCourse(courseId);
@@ -48,6 +52,7 @@ public class CourseController {
         }
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     @PutMapping("/{courseId}")
     public ResponseData<String> updateCourse(@PathVariable UUID courseId,
             @ModelAttribute @Valid UpdateCourseRequest request) {
@@ -59,6 +64,7 @@ public class CourseController {
         }
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     @PutMapping("/{courseId}/status")
     public ResponseData<String> updateCourseStatus(@PathVariable String courseId) {
         courseService.updateCourseStatus(courseId);

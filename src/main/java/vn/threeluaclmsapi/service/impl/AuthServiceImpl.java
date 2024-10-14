@@ -85,4 +85,9 @@ public class AuthServiceImpl implements AuthService {
 
         return "Deleted";
     }
+
+    @Override
+    public String forgotPassword(String email) {
+        return "";
+    }
 }

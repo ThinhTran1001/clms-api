@@ -33,4 +33,9 @@ public class AuthController {
         return new ResponseEntity<>(authService.logout(request), HttpStatus.OK);
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody String email) {
+        return new ResponseEntity<>(authService.forgotPassword(email), HttpStatus.OK);
+    }
+
 }
