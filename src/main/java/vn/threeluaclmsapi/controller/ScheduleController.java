@@ -56,6 +56,7 @@ public class ScheduleController {
     @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping("/my-schedule")
     public ResponseData<List<ScheduleResponse>> getMySchedule(){
+        List<ScheduleResponse> scheduleResponseList = scheduleService.getScheduleForStudent();
         return new ResponseData<>(HttpStatus.OK.toString(), "Schedule list");
     }
 

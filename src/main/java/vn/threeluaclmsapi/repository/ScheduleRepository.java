@@ -31,6 +31,16 @@ public interface ScheduleRepository extends JpaRepository<Schedule, String> {
             "WHERE s.instructor.id = :instructorId")
     List<Object[]> findAllByInstructorId(String instructorId);
 
+    @Query("SELECT s.slot.startTime, s.slot.endTime, s.scheduleDate, s.instructor.user.fullName " +
+            "FROM Schedule s " +
+            "JOIN Lesson l ON s.lesson.id = l.id " +
+            "JOIN Classroom c ON s.classroom.id = c.id " +
+            "JOIN Course crs ON crs.id = l.course.id " +
+            "JOIN Enrollment e ON e.course.id = crs.id " +
+            "JOIN Subject sub ON crs.subject.id = sub.id " +
+            "WHERE e.user.id = :studentId")
+    List<Object[]> findAllByStudentId(String studentId);
+
     @Query("SELECT s " +
             "FROM Schedule s " +
             "WHERE s.scheduleDate = :scheduleDate AND s.slot.id = :slotId")
