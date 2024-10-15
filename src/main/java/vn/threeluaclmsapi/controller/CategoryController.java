@@ -18,7 +18,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseData<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
@@ -29,7 +29,7 @@ public class CategoryController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}")
     public ResponseData<Category> getCategoryById(@PathVariable String id) {
         Category category = categoryService.getCategoryById(id);
@@ -40,14 +40,14 @@ public class CategoryController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseData<Category> createCategory(@RequestBody Category category) {
         Category createdCategory = categoryService.createCategory(category);
         return new ResponseData<>("201", "Category created successfully", createdCategory);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseData<Category> updateCategory(@PathVariable String id, @RequestBody Category category) {
         Category updatedCategory = categoryService.updateCategory(id, category);
@@ -58,7 +58,7 @@ public class CategoryController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseData<String> deleteCategory(@PathVariable String id) {
         if (categoryService.deleteCategory(id)) {
@@ -68,7 +68,7 @@ public class CategoryController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{categoryId}/status")
     public ResponseData<String> updateCategoryStatus(@PathVariable String categoryId) {
         categoryService.updateCategoryStatus(categoryId);
