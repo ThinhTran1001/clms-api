@@ -19,14 +19,14 @@ public class SemesterController {
 
     private final SemesterService semesterService;
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping()
     public ResponseData<?> createSemester(@RequestBody CreateSemesterRequest request) {
         semesterService.createSemester(request);
         return new ResponseData<>(HttpStatus.CREATED.toString(), "Semester created successfully");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping()
     public ResponseData<List<SemesterResponse>> getAllSemester(){
         List<SemesterResponse> list = semesterService.getAllSemester();
