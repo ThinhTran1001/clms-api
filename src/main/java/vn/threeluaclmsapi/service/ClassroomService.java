@@ -15,8 +15,6 @@ public interface ClassroomService {
 
     ClassroomDetailResponse getClassroomDetailById(String id);
 
-    void importStudentListToClassroom(String classroomId, MultipartFile file);
-
     void updateClassroom(ClassroomRequest request, String id);
 
     void changeStatus(String id);

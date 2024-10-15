@@ -74,4 +74,5 @@ public class CategoryController {
         categoryService.updateCategoryStatus(categoryId);
         return new ResponseData<>("200", "Category status updated successfully");
     }
+
 }

@@ -61,9 +61,6 @@ public class User extends AbstractEntity implements UserDetails {
     private Student student;
 
     @OneToMany(mappedBy = "user")
-    private List<StudentClassroom> studentClassrooms;
-
-    @OneToMany(mappedBy = "user")
     private List<Enrollment> studentEnrollments;
 
     @OneToMany(mappedBy = "user")

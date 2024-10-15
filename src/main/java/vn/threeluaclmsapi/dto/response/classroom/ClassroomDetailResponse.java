@@ -15,5 +15,4 @@ public class ClassroomDetailResponse implements Serializable {
 
     private Integer capacity;
 
-    private List<StudentResponse> studentList;
 }

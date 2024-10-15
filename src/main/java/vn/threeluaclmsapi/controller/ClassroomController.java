@@ -51,17 +51,6 @@ public class ClassroomController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/{classroomId}/import-student")
-    public ResponseData<?> importStudentListToClassroom(
-            @PathVariable String classroomId,
-            @RequestParam("file") MultipartFile file){
-        classroomService.importStudentListToClassroom(classroomId, file);
-        return new ResponseData<>(
-                HttpStatus.NO_CONTENT.toString(),
-                "add student list to classroom successfully!");
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{classroomId}")
     public ResponseData<?> updateClassroom(@RequestBody @Valid ClassroomRequest request, @PathVariable String classroomId){
         classroomService.updateClassroom(request, classroomId);

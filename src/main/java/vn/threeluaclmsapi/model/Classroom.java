@@ -28,9 +28,6 @@ public class Classroom extends AbstractEntity {
     private boolean status;
 
     @OneToMany(mappedBy = "classroom")
-    private List<StudentClassroom> classroomStudents;
-
-    @OneToMany(mappedBy = "classroom")
     private List<Schedule> schedules;
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
