@@ -2,6 +2,9 @@ package vn.threeluaclmsapi.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.threeluaclmsapi.dto.request.schedule.CreateScheduleRequest;
@@ -9,14 +12,8 @@ import vn.threeluaclmsapi.dto.request.schedule.UpdateScheduleRequest;
 import vn.threeluaclmsapi.dto.response.schedule.ScheduleResponse;
 import vn.threeluaclmsapi.exception.CommonException;
 import vn.threeluaclmsapi.exception.ResourceNotFoundException;
-import vn.threeluaclmsapi.model.Classroom;
-import vn.threeluaclmsapi.model.Lesson;
-import vn.threeluaclmsapi.model.Schedule;
-import vn.threeluaclmsapi.model.Slot;
-import vn.threeluaclmsapi.repository.ClassroomRepository;
-import vn.threeluaclmsapi.repository.LessonRepository;
-import vn.threeluaclmsapi.repository.ScheduleRepository;
-import vn.threeluaclmsapi.repository.SlotRepository;
+import vn.threeluaclmsapi.model.*;
+import vn.threeluaclmsapi.repository.*;
 import vn.threeluaclmsapi.service.ScheduleService;
 import vn.threeluaclmsapi.util.common.DateUtils;
 
@@ -39,6 +36,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ClassroomRepository classroomRepository;
 
     private final SlotRepository slotRepository;
+
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -92,6 +91,32 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<Object[]> schedules = scheduleRepository.findAllByInstructorId(instructorId);
         return mapSchedulesToResponses(schedules);
     }
+
+    @Override
+    public List<ScheduleResponse> getScheduleForStudent() {
+        String username = null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails) principal).getUsername();
+            } else {
+                username = principal.toString();
+            }
+        }
+
+        if (username == null) {
+            throw new IllegalStateException("User is not authenticated");
+        }
+
+        User student = userRepository.findByEmail(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Cannot find student"));
+
+        List<Object[]> schedules = scheduleRepository.findAllByStudentId(student.getId());
+
+        return mapSchedulesToResponses(schedules);
+    }
+
 
     @Override
     @Transactional

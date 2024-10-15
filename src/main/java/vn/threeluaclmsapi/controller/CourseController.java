@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -77,6 +78,6 @@ public class CourseController {
             @RequestParam MultipartFile file,
             @PathVariable String courseId){
         courseService.importStudentList(courseId, file);
-        return new ResponseData<>("200", "Student imported successfully");
+        return new ResponseData<>(HttpStatus.NO_CONTENT.toString(),"Student imported successfully");
     }
 }

@@ -16,4 +16,6 @@ public interface ScheduleService {
     void updateSchedule(UpdateScheduleRequest request, String id);
 
     List<ScheduleResponse> getAllByInstructor(String instructorId);
+
+    List<ScheduleResponse> getScheduleForStudent();
 }
