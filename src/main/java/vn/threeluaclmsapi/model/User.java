@@ -6,10 +6,13 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import vn.threeluaclmsapi.util.enums.Gender;
+import vn.threeluaclmsapi.util.enums.Role;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +52,11 @@ public class User extends AbstractEntity implements UserDetails {
     @Column(name="status")
     private boolean status;
 
+    @Column(name= "role")
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    private Role role;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Student student;
 
@@ -63,7 +71,7 @@ public class User extends AbstractEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

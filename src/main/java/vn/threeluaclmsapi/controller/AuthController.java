@@ -29,8 +29,13 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public String logout() {
-        return "logout success!";
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        return new ResponseEntity<>(authService.logout(request), HttpStatus.OK);
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody String email) {
+        return new ResponseEntity<>(authService.forgotPassword(email), HttpStatus.OK);
     }
 
 }

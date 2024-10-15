@@ -17,6 +17,7 @@ public class ThreeluaClmsApiApplication {
         System.setProperty("SERVER_PORT", dotenv.get("SERVER_PORT"));
         System.setProperty("JWT_SECRET_KEY", dotenv.get("JWT_SECRET_KEY"));
         System.setProperty("JWT_EXPIRATION", dotenv.get("JWT_EXPIRATION"));
+        System.setProperty("JWT_REFRESH_KEY", dotenv.get("JWT_REFRESH_KEY"));
 
         SpringApplication.run(ThreeluaClmsApiApplication.class, args);
     }

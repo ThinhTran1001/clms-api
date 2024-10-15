@@ -19,6 +19,8 @@ import vn.threeluaclmsapi.service.UserService;
 
 import java.io.IOException;
 
+import static vn.threeluaclmsapi.util.enums.TokenType.ACCESS_TOKEN;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -46,11 +48,11 @@ public class PreFilter extends OncePerRequestFilter {
         final String token = authorization.substring("Bearer ".length());
         log.info("Token: {}", token);
 
-        final String username = jwtService.extractUsername(token);
+        final String username = jwtService.extractUsername(token, ACCESS_TOKEN);
 
         if(StringUtils.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.userDetailsService().loadUserByUsername(username);
-            if(jwtService.isValid(token, userDetails)) {
+            if(jwtService.isValid(token, userDetails, ACCESS_TOKEN)) {
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());

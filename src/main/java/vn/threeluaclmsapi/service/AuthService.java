@@ -9,4 +9,8 @@ public interface AuthService {
     TokenResponse authenticate(SignInRequest request);
 
     TokenResponse refresh(HttpServletRequest request);
+
+    String logout(HttpServletRequest request);
+
+    String forgotPassword(String email);
 }
