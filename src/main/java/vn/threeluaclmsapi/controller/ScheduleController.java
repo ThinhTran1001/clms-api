@@ -19,14 +19,14 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
-    @PreAuthorize("hasAnyRole('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER')")
     @PostMapping
     public ResponseData<String> createSchedule(@RequestBody CreateScheduleRequest request){
         String scheduleId = scheduleService.createSchedule(request);
         return new ResponseData<>(HttpStatus.CREATED.toString(), "Schedule created", scheduleId);
     }
 
-    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT')")
+    @PreAuthorize("hasAnyAuthority('TEACHER', 'STUDENT')")
     @GetMapping("/classroom/{classroomName}")
     public ResponseData<List<ScheduleResponse>> getScheduleListByClassroomName(@PathVariable String classroomName){
         List<ScheduleResponse> scheduleResponseList = scheduleService.getAllByClassroomName(classroomName);
@@ -36,14 +36,14 @@ public class ScheduleController {
                 scheduleResponseList);
     }
 
-    @PreAuthorize("hasAnyRole('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER')")
     @PutMapping("/{scheduleId}")
     public ResponseData<?> updateSchedule(@RequestBody UpdateScheduleRequest request, @PathVariable String scheduleId){
         scheduleService.updateSchedule(request, scheduleId);
         return new ResponseData<>(HttpStatus.ACCEPTED.toString(), "Schedule updated");
     }
 
-    @PreAuthorize("hasAnyRole('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER')")
     @GetMapping("/instructor/{instructorId}")
     public ResponseData<List<ScheduleResponse>> getScheduleListByInstructorId(@PathVariable String instructorId){
         List<ScheduleResponse> scheduleResponseList = scheduleService.getAllByInstructor(instructorId);
@@ -53,7 +53,7 @@ public class ScheduleController {
                 scheduleResponseList);
     }
 
-    @PreAuthorize("hasAnyRole('STUDENT')")
+    @PreAuthorize("hasAuthority('STUDENT')")
     @GetMapping("/my-schedule")
     public ResponseData<List<ScheduleResponse>> getMySchedule(){
         return new ResponseData<>(HttpStatus.OK.toString(), "Schedule list");

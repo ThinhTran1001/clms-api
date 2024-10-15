@@ -24,7 +24,7 @@ public class CourseController {
 
     private final CourseService courseService;
 
-    @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER')")
+    @PreAuthorize("hasAnyAuthority('STUDENT', 'TEACHER')")
     @GetMapping
     public ResponseData<List<CourseDetailsResponse>> getAllCourses() {
         List<CourseDetailsResponse> courses = courseService.listAllCourses();
@@ -34,14 +34,14 @@ public class CourseController {
         return new ResponseData<>("200", "Success", courses);
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasAuthority('TEACHER')")
     @PostMapping
     public ResponseData<String> createCourse(@ModelAttribute @Valid CreateCourseRequest request) throws IOException {
         courseService.createCourse(request);
         return new ResponseData<>("201", "Course created successfully");
     }
 
-    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT')")
+    @PreAuthorize("hasAnyAuthority('TEACHER', 'STUDENT')")
     @GetMapping("/{courseId}")
     public ResponseData<CourseDetailsResponse> viewCourse(@PathVariable UUID courseId) {
         CourseDetailsResponse courseDetails = courseService.viewCourse(courseId);
@@ -52,7 +52,7 @@ public class CourseController {
         }
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{courseId}")
     public ResponseData<String> updateCourse(@PathVariable UUID courseId,
             @ModelAttribute @Valid UpdateCourseRequest request) {
@@ -64,7 +64,7 @@ public class CourseController {
         }
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{courseId}/status")
     public ResponseData<String> updateCourseStatus(@PathVariable String courseId) {
         courseService.updateCourseStatus(courseId);

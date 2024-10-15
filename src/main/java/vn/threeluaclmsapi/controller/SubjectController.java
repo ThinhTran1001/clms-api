@@ -21,7 +21,7 @@ public class SubjectController {
 
     private final SubjectService subjectService;
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseData<List<Subject>> getAllSubjects() {
         List<Subject> subjects = subjectService.getAllSubjects();
@@ -32,14 +32,14 @@ public class SubjectController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseData<Subject> createSubject(@Valid @RequestBody CreateSubjectRequest request) {
         Subject createdSubject = subjectService.createSubject(request);
         return new ResponseData<>("201", "Subject created successfully", createdSubject);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}")
     public ResponseData<Subject> getSubjectById(@PathVariable("id") String id) {
         Subject subject = subjectService.getSubjectById(id);
@@ -50,7 +50,7 @@ public class SubjectController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseData<Subject> updateSubject(@PathVariable String id,
             @Valid @RequestBody UpdateSubjectRequest request) {
@@ -62,14 +62,14 @@ public class SubjectController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{subjectId}/status")
     public ResponseData<String> updateSubjectStatus(@PathVariable String subjectId) {
         subjectService.updateSubjectStatus(subjectId);
         return new ResponseData<>("200", "Subject status updated successfully");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/category")
     public ResponseData<List<Subject>> listSubjectByCategoryId(String categoryId) {
         List<Subject> subjects = subjectService.listSubjectByCategoryId(categoryId);

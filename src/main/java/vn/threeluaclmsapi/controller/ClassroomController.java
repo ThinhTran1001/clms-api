@@ -23,6 +23,7 @@ public class ClassroomController {
 
     private final ClassroomService classroomService;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping()
     public ResponseData<?> createClassroom(@RequestBody @Valid ClassroomRequest request){
         classroomService.createClassroom(request);
@@ -30,7 +31,7 @@ public class ClassroomController {
         return new ResponseData<>(HttpStatus.CREATED.toString(), "Created classroom successfully!");
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasAnyAuthority('TEACHER', 'STUDENT', 'ADMIN')")
     @GetMapping()
     public ResponseData<List<ClassroomResponse>> getAllClassrooms(){
         List<ClassroomResponse> classroomResponseList = classroomService.getAllClassroom();
@@ -38,6 +39,7 @@ public class ClassroomController {
         return new ResponseData<>(HttpStatus.OK.toString(), "Classroom list", classroomResponseList);
     }
 
+    @PreAuthorize("hasAnyAuthority('TEACHER', 'ADMIN')")
     @GetMapping("/{classroomId}")
     public ResponseData<ClassroomDetailResponse> getClassroomById(@PathVariable String classroomId){
         ClassroomDetailResponse classroomDetailResponse = classroomService.getClassroomDetailById(classroomId);
@@ -48,7 +50,7 @@ public class ClassroomController {
                 classroomDetailResponse);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/{classroomId}/import-student")
     public ResponseData<?> importStudentListToClassroom(
             @PathVariable String classroomId,
@@ -59,12 +61,14 @@ public class ClassroomController {
                 "add student list to classroom successfully!");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{classroomId}")
     public ResponseData<?> updateClassroom(@RequestBody @Valid ClassroomRequest request, @PathVariable String classroomId){
         classroomService.updateClassroom(request, classroomId);
         return new ResponseData<>(HttpStatus.OK.toString(), "Classroom updated successfully!");
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/changeStatus/{classroomId}")
     public ResponseData<?> changeClassroomStatus(@PathVariable String classroomId){
         classroomService.changeStatus(classroomId);
