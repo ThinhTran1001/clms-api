@@ -70,4 +70,13 @@ public class CourseController {
         courseService.updateCourseStatus(courseId);
         return new ResponseData<>("200", "Course status updated successfully");
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/{courseId}/import-student")
+    public ResponseData<String> importStudentListToCourse(
+            @RequestParam MultipartFile file,
+            @PathVariable String courseId){
+        courseService.importStudentList(courseId, file);
+        return new ResponseData<>("200", "Student imported successfully");
+    }
 }

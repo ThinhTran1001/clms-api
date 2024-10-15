@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import java.io.IOException;
 
+import org.springframework.web.multipart.MultipartFile;
 import vn.threeluaclmsapi.dto.request.course.CreateCourseRequest;
 import vn.threeluaclmsapi.dto.request.course.UpdateCourseRequest;
 import vn.threeluaclmsapi.dto.response.CourseDetailsResponse;
@@ -18,4 +19,6 @@ public interface CourseService {
     void updateCourse(UUID courseId, UpdateCourseRequest request);
 
     void updateCourseStatus(String courseId);
+
+    void importStudentList(String courseId, MultipartFile file);
 }
