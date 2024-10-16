@@ -32,7 +32,7 @@ public class LessonController {
         return new ResponseData<>("201", "Lesson created successfully");
     }
 
-    @PreAuthorize("hasAnyAuthority('TEACHER', 'STUDENT')")
+    @PreAuthorize("hasAnyAuthority('TEACHER', 'STUDENT', 'ADMIN')")
     @GetMapping
     public ResponseData<List<LessonResponse>> getAllLessons() {
         List<LessonResponse> lessons = lessonService.getAllLessons();

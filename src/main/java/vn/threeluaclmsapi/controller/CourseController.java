@@ -25,7 +25,7 @@ public class CourseController {
 
     private final CourseService courseService;
 
-    @PreAuthorize("hasAnyAuthority('STUDENT', 'TEACHER')")
+    @PreAuthorize("hasAnyAuthority('STUDENT', 'TEACHER', 'ADMIN')")
     @GetMapping
     public ResponseData<List<CourseDetailsResponse>> getAllCourses() {
         List<CourseDetailsResponse> courses = courseService.listAllCourses();

@@ -31,7 +31,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, String> {
             "WHERE s.instructor.id = :instructorId")
     List<Object[]> findAllByInstructorId(String instructorId);
 
-    @Query("SELECT s.slot.startTime, s.slot.endTime, s.scheduleDate, s.instructor.user.fullName " +
+    @Query("SELECT c.classroomName, sub.subjectCode, sub.subjectName, s.slot.startTime, " +
+            "s.slot.endTime, s.scheduleDate, s.instructor.user.fullName " +
             "FROM Schedule s " +
             "JOIN Lesson l ON s.lesson.id = l.id " +
             "JOIN Classroom c ON s.classroom.id = c.id " +
@@ -51,6 +52,5 @@ public interface ScheduleRepository extends JpaRepository<Schedule, String> {
             "WHERE s.classroom.id = :classroomId " +
             "AND s.scheduleDate BETWEEN :startOfWeek AND :endOfWeek")
     Long countSchedulesInWeek(String classroomId, LocalDate startOfWeek, LocalDate endOfWeek);
-
 
 }
