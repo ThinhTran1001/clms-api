@@ -30,6 +30,7 @@ import vn.threeluaclmsapi.service.CourseService;
 import vn.threeluaclmsapi.util.common.DateUtils;
 import vn.threeluaclmsapi.util.common.EnumUtils;
 import vn.threeluaclmsapi.util.enums.Gender;
+import vn.threeluaclmsapi.util.enums.Role;
 
 @Slf4j
 @Service
@@ -43,6 +44,7 @@ public class CourseServiceImpl implements CourseService {
     private final LessonRepository lessonRepository;
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
     @Override
     public List<CourseDetailsResponse> listAllCourses() {
@@ -253,6 +255,7 @@ public class CourseServiceImpl implements CourseService {
         user.setEmail(email);
         user.setAddress(address);
         user.setGender(gender);
+        user.setRole(Role.STUDENT);
         user.setDob(Date.valueOf(dateOfBirth));
         return userRepository.save(user);
     }
@@ -262,12 +265,14 @@ public class CourseServiceImpl implements CourseService {
         student.setUser(user);
         student.setStudentCode(studentCode);
         student.setMajor(major);
+        studentRepository.save(student);
     }
 
     private void createEnrollment(User user, Course course) {
         Enrollment enrollment = new Enrollment();
         enrollment.setCourse(course);
         enrollment.setUser(user);
+        enrollmentRepository.save(enrollment);
     }
 
 }
