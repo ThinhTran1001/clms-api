@@ -66,6 +66,12 @@ public class User extends AbstractEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<CourseInstructor> instructors;
 
+    @OneToMany(mappedBy = "participant")
+    private List<QuizAttempt> quizAttempts;
+
+    @OneToMany(mappedBy = "user")
+    private List<Attendance> attendances;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(role.name()));

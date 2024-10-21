@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,5 +37,8 @@ public class Schedule extends AbstractEntity {
 
     @Column(name = "schedule_date")
     private LocalDate scheduleDate;
+
+    @OneToMany(mappedBy = "schedule")
+    private List<Attendance> attendance;
 
 }
