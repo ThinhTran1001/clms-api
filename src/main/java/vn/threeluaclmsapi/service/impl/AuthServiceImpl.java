@@ -5,6 +5,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import vn.threeluaclmsapi.dto.request.SignInRequest;
 import vn.threeluaclmsapi.dto.response.TokenResponse;
@@ -16,6 +21,8 @@ import vn.threeluaclmsapi.repository.UserRepository;
 import vn.threeluaclmsapi.service.AuthService;
 import vn.threeluaclmsapi.service.JwtService;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static vn.threeluaclmsapi.util.enums.TokenType.ACCESS_TOKEN;
@@ -26,12 +33,10 @@ import static vn.threeluaclmsapi.util.enums.TokenType.REFRESH_TOKEN;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-
     private final AuthenticationManager authenticationManager;
-
     private final JwtService jwtService;
-
     private final TokenService tokenService;
+    private final OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService;
 
     @Override
     public TokenResponse authenticate(SignInRequest request) {
@@ -89,5 +94,19 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String forgotPassword(String email) {
         return "";
+    }
+
+    @Override
+    public Map<String, String> loginByGoogle(OAuth2AuthenticationToken authenticationToken) {
+        try {
+            OAuth2User oAuth2User = oAuth2UserService.loadUser((OAuth2UserRequest) authenticationToken.getPrincipal());
+            String jwtToken = oAuth2User.getAttribute("jwtToken");
+
+            Map<String, String> response = new HashMap<>();
+            response.put("jwtToken", jwtToken);
+            return response;
+        } catch (OAuth2AuthenticationException e) {
+            throw new OAuth2AuthenticationException(e.getError(), e.getMessage());
+        }
     }
 }

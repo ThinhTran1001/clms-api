@@ -14,12 +14,18 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import vn.threeluaclmsapi.repository.UserRepository;
+import vn.threeluaclmsapi.service.JwtService;
 import vn.threeluaclmsapi.service.UserService;
+import vn.threeluaclmsapi.service.impl.CustomOAuth2UserService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +36,8 @@ import java.util.List;
 public class AppConfiguration {
 
     private final UserService userService;
-
+//    private final UserRepository userRepository;
+//    private final JwtService jwtService;
     private final PreFilter preFilter;
 
     private String[] WHITE_LIST = {"/auth/**"};
@@ -60,7 +67,13 @@ public class AppConfiguration {
                     authorizeRequests.requestMatchers(WHITE_LIST).permitAll()
                             .anyRequest().authenticated();
                 }).sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(provider()).addFilterBefore(preFilter, UsernamePasswordAuthenticationFilter.class);
+                .authenticationProvider(provider()).addFilterBefore(preFilter, UsernamePasswordAuthenticationFilter.class)
+//                .oauth2Login(oauth2 -> oauth2
+//                .userInfoEndpoint(userInfo -> userInfo
+//                        .userService(customOAuth2UserService())
+//                )
+//                .defaultSuccessUrl("/api/auth/google/login", true)
+        ;
         return http.build();
     }
 
@@ -76,4 +89,9 @@ public class AppConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
+//    @Bean
+//    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService() {
+//        return new CustomOAuth2UserService(userRepository, jwtService);
+//    }
 }

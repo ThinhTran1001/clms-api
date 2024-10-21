@@ -26,7 +26,7 @@ public class SemesterController {
         return new ResponseData<>(HttpStatus.CREATED.toString(), "Semester created successfully");
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'STUDENT', 'TEACHER')")
     @GetMapping()
     public ResponseData<List<SemesterResponse>> getAllSemester(){
         List<SemesterResponse> list = semesterService.getAllSemester();

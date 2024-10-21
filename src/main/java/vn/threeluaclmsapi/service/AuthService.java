@@ -1,8 +1,11 @@
 package vn.threeluaclmsapi.service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import vn.threeluaclmsapi.dto.request.SignInRequest;
 import vn.threeluaclmsapi.dto.response.TokenResponse;
+
+import java.util.Map;
 
 public interface AuthService {
 
@@ -13,4 +16,6 @@ public interface AuthService {
     String logout(HttpServletRequest request);
 
     String forgotPassword(String email);
+
+    Map<String, String> loginByGoogle(OAuth2AuthenticationToken authenticationToken);
 }

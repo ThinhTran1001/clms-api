@@ -5,11 +5,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import vn.threeluaclmsapi.dto.request.SignInRequest;
 import vn.threeluaclmsapi.dto.response.ResponseData;
 import vn.threeluaclmsapi.dto.response.TokenResponse;
 import vn.threeluaclmsapi.service.AuthService;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -38,4 +41,8 @@ public class AuthController {
         return new ResponseEntity<>(authService.forgotPassword(email), HttpStatus.OK);
     }
 
+    @GetMapping("google/login")
+    public ResponseEntity<Map<String, String>> googleLogin(OAuth2AuthenticationToken authenticationToken) {
+        return new ResponseEntity<>(authService.loginByGoogle(authenticationToken), HttpStatus.OK);
+    }
 }
