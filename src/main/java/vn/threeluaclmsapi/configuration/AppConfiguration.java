@@ -23,6 +23,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import vn.threeluaclmsapi.repository.UserRepository;
+import vn.threeluaclmsapi.security.OAuth2LoginHandler;
 import vn.threeluaclmsapi.service.JwtService;
 import vn.threeluaclmsapi.service.UserService;
 import vn.threeluaclmsapi.service.impl.CustomOAuth2UserService;
@@ -36,9 +37,9 @@ import java.util.List;
 public class AppConfiguration {
 
     private final UserService userService;
-//    private final UserRepository userRepository;
-//    private final JwtService jwtService;
     private final PreFilter preFilter;
+    private final CustomOAuth2UserService oAuth2UserService;
+    private final OAuth2LoginHandler oAuth2LoginHandler;
 
     private String[] WHITE_LIST = {"/auth/**"};
 
@@ -68,11 +69,12 @@ public class AppConfiguration {
                             .anyRequest().authenticated();
                 }).sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(provider()).addFilterBefore(preFilter, UsernamePasswordAuthenticationFilter.class)
-//                .oauth2Login(oauth2 -> oauth2
-//                .userInfoEndpoint(userInfo -> userInfo
-//                        .userService(customOAuth2UserService())
-//                )
-//                .defaultSuccessUrl("/api/auth/google/login", true)
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(oAuth2UserService)
+                        )
+                        .successHandler(oAuth2LoginHandler)
+                        .defaultSuccessUrl("/users/dashboard", true))
         ;
         return http.build();
     }
@@ -90,8 +92,4 @@ public class AppConfiguration {
         return config.getAuthenticationManager();
     }
 
-//    @Bean
-//    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService() {
-//        return new CustomOAuth2UserService(userRepository, jwtService);
-//    }
 }

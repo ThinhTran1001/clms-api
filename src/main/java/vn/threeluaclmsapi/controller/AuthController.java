@@ -41,8 +41,4 @@ public class AuthController {
         return new ResponseEntity<>(authService.forgotPassword(email), HttpStatus.OK);
     }
 
-    @GetMapping("google/login")
-    public ResponseEntity<Map<String, String>> googleLogin(OAuth2AuthenticationToken authenticationToken) {
-        return new ResponseEntity<>(authService.loginByGoogle(authenticationToken), HttpStatus.OK);
-    }
 }

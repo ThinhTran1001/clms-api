@@ -62,4 +62,9 @@ public class UserController {
         return ResponseEntity.ok(inactivatedUser);
     }
 
+    @GetMapping("/dashboard")
+    public String dashboard(){
+        return "dashboard";
+    }
+
 }

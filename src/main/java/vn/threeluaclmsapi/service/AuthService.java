@@ -17,5 +17,4 @@ public interface AuthService {
 
     String forgotPassword(String email);
 
-    Map<String, String> loginByGoogle(OAuth2AuthenticationToken authenticationToken);
 }

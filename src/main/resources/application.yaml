@@ -27,8 +27,10 @@ spring:
         provider:
           google:
             authorization-uri: https://accounts.google.com/o/oauth2/auth
-            token-uri: https://oauth2.googleapis.com/token
+            token-uri: https://accounts.google.com/o/oauth2/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: email
+
 server:
   port: ${SERVER_PORT}
 

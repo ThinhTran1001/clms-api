@@ -36,7 +36,6 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final TokenService tokenService;
-    private final OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService;
 
     @Override
     public TokenResponse authenticate(SignInRequest request) {
@@ -96,17 +95,4 @@ public class AuthServiceImpl implements AuthService {
         return "";
     }
 
-    @Override
-    public Map<String, String> loginByGoogle(OAuth2AuthenticationToken authenticationToken) {
-        try {
-            OAuth2User oAuth2User = oAuth2UserService.loadUser((OAuth2UserRequest) authenticationToken.getPrincipal());
-            String jwtToken = oAuth2User.getAttribute("jwtToken");
-
-            Map<String, String> response = new HashMap<>();
-            response.put("jwtToken", jwtToken);
-            return response;
-        } catch (OAuth2AuthenticationException e) {
-            throw new OAuth2AuthenticationException(e.getError(), e.getMessage());
-        }
-    }
 }
