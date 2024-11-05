@@ -1,12 +1,14 @@
 package vn.threeluaclmsapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import vn.threeluaclmsapi.dto.request.classroom.ClassroomRequest;
 import vn.threeluaclmsapi.dto.response.classroom.ClassroomDetailResponse;
 import vn.threeluaclmsapi.dto.response.classroom.ClassroomResponse;
@@ -19,10 +21,13 @@ import java.util.List;
 @RequestMapping("/classroom")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
+@Tag(name = "Classroom Controller")
 public class ClassroomController {
 
     private final ClassroomService classroomService;
 
+    @Operation(method = "POST", summary = "Create new classroom", description = "Send a request via this API to create new classroom")
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping()
     public ResponseData<?> createClassroom(@RequestBody @Valid ClassroomRequest request){
