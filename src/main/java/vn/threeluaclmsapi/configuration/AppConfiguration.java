@@ -41,7 +41,7 @@ public class AppConfiguration {
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2LoginHandler oAuth2LoginHandler;
 
-    private String[] WHITE_LIST = {"/auth/**"};
+    private final String[] WHITE_LIST = {"/auth/**"};
 
     //cors configuration
     @Bean

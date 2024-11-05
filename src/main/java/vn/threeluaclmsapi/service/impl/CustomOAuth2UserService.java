@@ -30,10 +30,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         String email = oAuth2User.getAttribute("email");
 
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(email)
-                .authorities(oAuth2User.getAuthorities())
-                .build();
-
         if(!isAllowedDomain(email)){
             throw new OAuth2AuthenticationException("Invalid email domain: " + email);
         }

@@ -30,13 +30,9 @@ import java.util.List;
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
-
     private final LessonRepository lessonRepository;
-
     private final ClassroomRepository classroomRepository;
-
     private final SlotRepository slotRepository;
-
     private final UserRepository userRepository;
 
     @Override
